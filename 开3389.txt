@@ -1,0 +1,18 @@
+1、
+echo Windows Registry Editor Version 5.00>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]>>3389.reg 
+echo "fDenyTSConnections"=dword:00000000>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg
+
+regedit /s 3389.reg
+
+2、
+DOS下开3389 并修改端口号
+sc config termservice start= auto
+net start termservice
+//允许外连
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0x0 /f 
+
