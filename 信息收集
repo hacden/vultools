@@ -1,0 +1,113 @@
+前端js代码进行审计发现的一些路径去测试访问
+
+1、子域名枚举
+工具：
+subDomainsBrute：https://github.com/lijiejie/subDomainsBrute
+Sublist3r
+subfinder
+dnsbrute：https://github.com/chuhades/dnsbrute
+
+2、在线查询
+https://d.chinacycc.com/index.php?m=login
+http://z.zcjun.com/
+https://phpinfo.me/domain/
+
+3、查询域名信息
+http://link.chinaz.com/
+几个whois查询站点：Chinaz、Aliyun、Whois365 
+
+4、查询web、系统指纹
+https://www.ddosi.com/ 
+https://whatweb.net/
+https://www.zoomeye.org/
+http://whatweb.bugscaner.com
+http://www.yunsee.cn/
+
+5、查询ip地理位置
+https://www.ipip.net/
+
+6、查询物联网等信息
+https://www.oshadan.com/
+
+7、备案号查询
+http://www.beianbeian.com/通过查询系统域名备案号
+
+8、目录爆破（可以查看html源代码收集目录）
+https://github.com/7kbstorm/7kbscan-WebPathBrute
+御剑工具
+Web敏感文件robots.txt、crossdomain.xml、sitemap.xml 
+
+9、ssl证书查询
+https://myssl.com/
+https://censys.io/
+
+10、搜索引擎查询
+google，baidu，bing，fofa， 
+shodan：https://www.shodan.io/ 
+
+11、信息泄露 
+通过github收集信息
+"xxx.com" API_key
+"xxx.com" secret_key
+"xxx.com" aws_key
+"xxx.com" Password 
+"xxx.com" FTP
+"xxx.com"  login 
+"xxx.com" github_token
+"api.xxx.com" 
+
+12、cms识别 
+http://whatweb.bugscaner.com/look/ 
+http://www.yunsee.cn/finger.html 
+
+13、IP段的收集 
+通过shodan来收集ip段，通过shodan来收集ip主要是利用shodan收集厂商特征ico
+通过AS号收集ip段我们可以通过在线网站 https://bgp.he.net 来查厂商的所属ip段 
+通过ip服务器查询：
+webscan：http://www.webscan.cc/
+微步：https://x.threatbook.cn/
+netcraft：https://toolbar.netcraft.com/site_report 
+
+13、端口查询
+利用masscan来扫描全端口，再调用nmap来扫描端口开启的服务，扫完端口后我们可以写个脚本来解析nmap的扫描结果，将开放的端口提取出来 
+
+14、邮箱挖掘
+通过TheHarvester可以进行邮箱挖掘 
+
+15、厂商业务收集 
+除了web端的信息收集以外，app和公众号也是我们不可忽视的一点，很多大的漏洞往往就在app端或者公众号上，收集厂商app的方法，一般我是利用crunchbase来进行app的收集的，除了app，公众号也可以通过天眼查和微信自身的搜索功能进行收集的。 
+利用云网盘搜索工具搜集敏感文件https://www.lingfengyun.com/ 
+
+免费接收短信:
+http://www.smszk.com/
+Z-SMS:
+http://www.z-sms.com/
+GetFreeSMSNumber:
+https://getfreesmsnumber.com/
+Free Online Phone:
+https://www.freeonlinephone.org/
+10分钟邮箱:
+http://mail.bccto.me/
+临时邮箱、临时电子邮箱、24小时邮箱:
+http://24mail.chacuo.net/
+
+
+16、几个生成字典方式
+Github上有很多收集好的字典
+https://github.com/rootphantomer/Blasting_dictionary
+可能你需要生成一些特殊定制的
+在线生成地址一：https://www.itxueke.com/tools/pass/#
+在线生成地址二：http://xingchen.pythonanywhere.com/index
+下面的py脚本你也可以尝试使用
+pydictor 
+下载地址：https://github.com/LandGrey/pydictor
+ 使用指南：https://www.ddosi.com/b172/
+somd5 提供的字典：
+https://www.somd5.com/download/dict/
+
+
+
+
+
+
+

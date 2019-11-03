@@ -1,0 +1,34 @@
+逗号------------net user
+,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;net user
+
+
+括号-----------netstat /ano | findstr LISTENING
+,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;netstat -ano |; ,;( (,;,((findstr LISTENING)),;,) )
+
+
+转义字符------------netstat /ano | findstr LISTENING
+,;,%coMSPec:~ -0, +27%,; ,;, ;^^^^/^^^^b^^^^, ;;; ,^^^^/^c, ,,, ;^^st^^art^^; , ; ;/^^^^b ; , ^^^^/^^^^min ,;net^^^^stat ^^^^ ^^^^-a^^^^no ^^^^ ^|; ,;( ^ (,;^,(^(fi^^^^ndstr LIST^^^^ENING)^),;^,) ^ )
+
+
+设置环境变量------
+#cmd /c "set com3= &&set com2=user&&set com1=net &&call %com1%%com2%%com3%"
+#cmd /c "set com3= /ano&&set com2=stat&&set com1=net&&call %com1%%com2%%com3%"
+#cmd /c "set com3= &&set com2=user&&set com1=net &&call set final=%com1%%com2%%com3%&&call %final%"
+
+
+随机大小写-------
+CMd /C "sEt coM3= /ano&& SEt cOm2=stat&& seT CoM1=net&& caLl SeT fiNAl=%COm1%%cOm2%%coM3%&& cAlL %FinAl%"
+
+
+逗号和分号---------
+;,,CMd,; ,/C ", ;, ;sEt coM3= &&,,,SEt cOm2=user&&;;;seT CoM1=net &&, ;caLl,;,SeT fiNAl=%COm1%%cOm2%%coM3%&&; , ,cAlL, ;, ;%FinAl% "
+
+
+将配对双引号添加到输入命令以混淆其最终命令行参数
+;,,C^Md^,; ,^/^C^ ^ ", ( ((;,( ;(s^Et ^ ^ co^M3=^^ /^^an^o)) )))&&,,(,S^Et^ ^ ^cO^m2=^s^^ta^^t)&&(;(;;s^eT^ ^ C^oM1^=^n^^e””t) ) &&, (( ;c^aLl,^;,S^e^T ^ ^ fi^NAl^=^%COm1^%%c^Om2%^%c^oM3^%))&&; (, ,(c^AlL^, ;,^ ;%Fi^nAl^%) ) "
+
+
+使用cmd.exe的/ V：ON参数启用延迟环境变量扩展
+;,,C^Md^,; /V:ON,^/^C^ ^ ", ( ((;,( ;(s^Et ^ ^ co^M3=^^ /^^an^o)) )))&&,,(,S^Et^ ^ ^cO^m2=^s^^ta^^t)&&(;(;;s^eT^ ^ C^oM1^=^n^^””e””t) ) &&set quotes=””&&, (( ;c^aLl,^;,S^e^T ^ ^ fi^NAl^=^%COm1^%%c^Om2%^%c^oM3^%))&&; (, ,(c^AlL^, ;,^ ;%Fi^nAl^%) ) "
+
+
