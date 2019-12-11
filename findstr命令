@@ -1,0 +1,5 @@
+findstr 搜索字符串。
+正则表达式：
+findstr /R "[<][?]php.\@eval[(]\$_POST.*[)];[?][>]" *.php
+
+

@@ -1,0 +1,30 @@
+-----关闭主动模式off进行批量操作----
+prompt
+
+ -----批量删除-----
+mdelete *-04.xml
+
+lcd /data/dzywSiteStatService/local/synthesize_index_upload/Data/201902
+!ls  ---查看本地目录下文件----
+!pwd ---查看在本地哪个目录下----
+----批量上传-------
+mput *-04.xml 
+
+-----批量下载------
+mget *-04.xml
+
+使用二进制文件传输方式。
+bin
+
+显示远程主机的操作系统类型。
+system
+
+ftp 指定配置文件：
+# ftp -s:filename.txt 
+---------------------------
+open 1.1.1.1 
+username 
+passworld
+get 
+a.exe d:\a.exe 
+bye

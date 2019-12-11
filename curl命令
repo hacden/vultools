@@ -1,0 +1,10 @@
+curl 
+-i：在输出中包含http头 
+-d：POST发送的数据
+抓取内容写入到文件： 
+# curl -o home.html www.baidu.com 
+
+查看响应时间： 
+# curl -o /dev/null -s -w %{time_namelookup}::%{time_connect}::%{time_starttransfer}::% {time_total}::%{speed_download}"\n" "http://www.taobao.com"
+
+

