@@ -1,0 +1,5 @@
+<%
+
+response.write("helloworld,hacden")
+
+%>
