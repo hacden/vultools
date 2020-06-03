@@ -1,1 +1,1 @@
-python weblogic.py -u http://221.224.159.213:8083/console/login/LoginForm.jsp -p dict.txt -t 50
+python weblogic.py -u http://xxx.xxx.xxx.xxx/console/login/LoginForm.jsp -p dict.txt -t 50
