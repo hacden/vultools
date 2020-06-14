@@ -1,6 +1,0 @@
-执行系统命令三种方法：
-awk 'BEGIN{system("echo abc")}' 
-awk 'BEGIN{print "echo","abc"| "/bin/bash"}' 
-awk '{"date"| getline d; print d; close("d")}'
-
-
