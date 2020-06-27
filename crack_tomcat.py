@@ -13,7 +13,6 @@ import argparse
 
 password_base64 = queue.Queue()
 count = 10
-
 #PROXS = {'http': '127.0.0.1:8080'}
 def get_cheek_pass(url,dict):
     username = ["tomcat","admin","Tomcat"]
@@ -61,7 +60,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', type=str, help='tomcat url Target')
     parser.add_argument('-p', type=str, help='password file')
-    args = vars(parser.parse_args())
+    args = parser.parse_args()
     url = args.t
     dict = args.p
     get_cheek_pass(url,dict)
