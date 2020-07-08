@@ -74,10 +74,10 @@ def exploit(protol, ip, port,cmd,timeout):
             if res:
                 return True,msg
             else:
-                msg = "[-] There is Seems NOT Vulnerable on Weblogic."
+                msg = "Res is None"
                 return False,msg
         else:
-            msg = "[-] There is Seems NOT Vulnerable on Weblogic."
+            msg = "Version is None"
             return False,msg
     except Exception as e:
         return False,e
