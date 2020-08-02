@@ -1,6 +1,7 @@
 # 渗透相关语法
 
 相关漏洞学习资料，利用方法和技巧合集 
+
 web常见漏洞：
 注入漏洞(HTML注入/代码注入/header头注入(CRLF)/sql注入/xml注入(xxe/wsdl))
 跨站XSS漏洞、安全配置错误、登录认证缺陷、越权、敏感信息泄露、权限控制不严格、请求伪造 (CSRF)、使用了存在漏洞的组件、点击劫持、SSRF
@@ -61,6 +62,14 @@ web常见漏洞：
 			* [jackson_databind反序列化](#jackson_databind反序列化)
 	* [渗透流程思路](#渗透流程思路)
 		* [登陆框](#登陆框)
+		* [注册框](#注册框)
+		* [密码找回](#密码找回)
+		* [后台管理](#后台管理)
+		* [评论区](#评论区)
+		* [购买支付](#购买支付)
+		* [抽奖_活动](#抽奖_活动)
+		* [代金卷_优惠卷](#代金卷_优惠卷)
+		* [订单](#订单)
 	
 ## 信息收集
 
@@ -831,10 +840,15 @@ param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://ja
 > **暴力破解用户名密码，验证码爆破和绕过，手机号撞库，测试sql注入，未授权访问，返回包绕过**
 <code>
 暴力破解用户名密码：固定用户名如：admin进行爆破密码，固定默认密码如：123456进行爆破用户名
+
 验证码爆破和绕过：验证码是4位，验证码参数删除，验证码前端验证无效
+
 手机号撞库：可搜集高质量的手机号
+
 测试sql注入：用户名框、密码框
+
 未授权访问：修改成登录主页面如：/index
+
 返回包绕过：false修改true，fail修改success，0修改1，301修改200
 </code>
 
@@ -848,7 +862,9 @@ param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://ja
 > **恶意注册，xss**
 <code>
 恶意用户批量注册：无验证码
+
 验证码爆破和绕过：验证码是4位，验证码参数删除，验证码前端验证无效
+
 存储型XSS：注册框，使用xss
 </code>
 
@@ -857,6 +873,7 @@ param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://ja
 > **重置密码**
 <code>
 重置任意用户账户密码：爆破4位验证码，验证码在返回包中，第二步骤或第三步骤修改成自己接受的手机号或邮箱
+
 批量重置用户密码：默认验证码如：111111
 </code>
 
@@ -865,10 +882,15 @@ param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://ja
 > **越权访问，csrf，xss，文件上传，sql注入，xxe等**
 <code>
 越权访问：注意cookie、url，post中等存在的身份验证参数如：userid (个人资料信息泄漏、个人资料遍历)
+
 csrf：使用的token是否有效，是否有规律如：删除token
+
 xss：见框就插或上传后缀，如payload: "><object data="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="></object>
+
 文件上传：图片上传处、视频上传处抓包绕过，ueditor编辑器漏洞
+
 sql注入：关键post参数，url隐藏参数，可结合爆破参数
+
 xxe：外部实体引用，是否支持xml格式请求
 </code>
 
@@ -877,7 +899,9 @@ xxe：外部实体引用，是否支持xml格式请求
 > **csrf，xss，遍历用户名**
 <code>
 csrf：使用的token是否有效，是否有规律如：删除token
+
 xss：见框就插或上传后缀，如payload: "><object data="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="></object>
+
 遍历用户名：可结合身份验证参数进行遍历
 </code>
 
@@ -907,6 +931,7 @@ xss：见框就插或上传后缀，如payload: "><object data="data:text/html;b
 > **订单信息泄漏，用户信息泄漏，订单遍历**
 <code>
 订单信息泄漏：越权查看别人订单信息
+
 订单遍历：订单号有规律
 </code>
 
