@@ -69,7 +69,7 @@ def verify(protol, ip, port, exploit_dir, dnslog, data):
     if int(port.strip()) == 443:
         url_dir = "https" + "://" + ip + exploit_dir
     else:
-        url_dir = protol.strip() + "://" + ip + ":" + port + exploit_dir
+        url_dir = protol.strip() + "://" + ip + ":" + port.strip() + exploit_dir
     try:
         check_fastjson_rce(url_dir, dnslog, data)
     except Exception as e:
