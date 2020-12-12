@@ -64,7 +64,7 @@ char *generate_password_hash(char *plaintext_pw) {
 }
 
 char *generate_passwd_line(struct Userinfo u) {
-  const char *format = "%s:%s:%d:%d:%s:%s:%s";
+  const char *format = "%s:%s:%d:%d:%s:%s:%s\n";
   int size = snprintf(NULL, 0, format, u.username, u.hash,
     u.user_id, u.group_id, u.info, u.home_dir, u.shell);
   char *ret = malloc(size + 1);
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   user.username = "root";
   user.user_id = 0;
   user.group_id = 0;
-  user.info = "boom_pwn";
+  user.info = "root";
   user.home_dir = "/root";
   user.shell = "/bin/bash";
 
