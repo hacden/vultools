@@ -27,7 +27,7 @@ web常见漏洞：
 		* [mssql注入](#mssql注入)
 			* [mssql布尔注入](#mssql布尔注入)
 			* [mssql报错注入](#mssql报错注入)
-			* [mssql延时注入](mssql延时注入)
+			* [mssql延时注入](#mssql延时注入)
 			* [mssql_waf绕过](#mssql_waf绕过)
 		* [oracle注入](#oracle注入)
 			* [oracle联合查询](#oracle联合查询)
