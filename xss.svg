@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="black" />
-  <script>
-    const passwd = prompt('username');
-    console.error('passwd: ', passwd);
-    alert(`thansks：${passwd}`);
-  </script>
-</svg>
+<svg><animate xlink:href=#xss attributeName=href fill=freeze dur=1ms values="http://isec.pl;javascript:alert(1)" /><a id=xss><text x=20 y=20>XSS</text></a>
