@@ -1,15 +1,1 @@
-<svg>
-<use xlink:href="data:image/svg+xml;base64,
-PHN2ZyBpZD0icmVjdGFuZ2xlIiB4bWxucz0iaHR0cD
-ovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhs
-aW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW
-5rIiAgICB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+
-PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg0KIDxmb3
-JlaWduT2JqZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0i
-NTAiDQogICAgICAgICAgICAgICAgICAgcmVxdWlyZW
-RFeHRlbnNpb25zPSJodHRwOi8vd3d3LnczLm9yZy8x
-OTk5L3hodG1sIj4NCgk8ZW1iZWQgeG1sbnM9Imh0dH
-A6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiIHNyYz0i
-amF2YXNjcmlwdDphbGVydChsb2NhdGlvbikiIC8+DQ
-ogICAgPC9mb3JlaWduT2JqZWN0Pg0KPC9zdmc+#rectangle" />
-</svg>
+<link rel="import" href="data:text/html;base64,PHNjcmlwdD5kZWxldGUgYWxlcnQ7YWxlcnQoIkhlbGxvIik7PC9zY3JpcHQ+">
