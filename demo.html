@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <button id="loginButton" style="display:none;">Login</button>
+
+    <script>
+        function triggerLogin() {
+            Swal.fire({
+                title: 'Login',
+                html:
+                    '<input type="text" id="login" class="swal2-input" placeholder="Username">' +
+                    '<input type="password" id="password" class="swal2-input" placeholder="Password">',
+                confirmButtonText: 'Sign in',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const login = Swal.getPopup().querySelector('#login').value
+                    const password = Swal.getPopup().querySelector('#password').value
+                    if (!login || !password) {
+                        Swal.showValidationMessage(`Please enter username and password`)
+                    }
+                    return { login: login, password: password }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: `Welcome, ${result.value.login}!`,
+                        html: `Your password is safe with us.`
+                    })
+                }
+            })
+        }
+
+        // 当 DOM 完全加载完成后执行 triggerLogin
+        document.addEventListener('DOMContentLoaded', triggerLogin);
+    </script>
+</body>
+</html>
